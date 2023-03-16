@@ -32,9 +32,6 @@ public class UserModel {
     @Email
     private String email;
 
-    @NotEmpty
-    private String username;
-
     @NotEmpty(message = "Password should not be empty")
     private String password;
 
