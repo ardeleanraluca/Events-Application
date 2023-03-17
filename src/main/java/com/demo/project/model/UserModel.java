@@ -1,7 +1,5 @@
 package com.demo.project.model;
 
-import com.demo.project.util.UserType;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

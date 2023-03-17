@@ -1,8 +1,8 @@
 package com.demo.project.entity;
 
-import com.demo.project.util.UserType;
 import jakarta.persistence.*;
 import lombok.*;
+
 
 @Data
 @NoArgsConstructor
@@ -14,8 +14,6 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private UserType userType;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -32,6 +30,11 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String password;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private RoleEntity role;
 
 
 }
