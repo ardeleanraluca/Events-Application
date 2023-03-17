@@ -11,21 +11,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserModel {
+public class UserAccModel {
 
     @NotEmpty
     private String firstName;
     @NotEmpty
     private String lastName;
-    @NotEmpty
-    private String dateOfBirth;
-
-    @NotEmpty
-    private String city;
-
-    @NotEmpty
-    private String county;
-
     @NotEmpty(message = "Email should not be empty")
     @Email
     private String email;
