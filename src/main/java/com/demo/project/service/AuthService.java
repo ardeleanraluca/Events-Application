@@ -38,7 +38,6 @@ public class AuthService {
             return new ResponseEntity<>("An account is already registered with this email!", HttpStatus.BAD_REQUEST);
         }
 
-
         UserEntity user = new UserEntity();
         user.setName(userModel.getFirstName() + " " + userModel.getLastName());
         user.setDateOfBirth(userModel.getDateOfBirth());
