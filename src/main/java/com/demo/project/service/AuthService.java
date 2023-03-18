@@ -51,7 +51,7 @@ public class AuthService {
         userAcc.setPassword(passwordEncoder.encode((standardUserModel.getPassword())));
         RoleEntity role = roleRepository.findByName("USER").get();
         userAcc.setRole(role);
-        userAccountRepository.saveAndFlush(userAcc).getId();
+        userAccountRepository.saveAndFlush(userAcc);
 
         StandardUserEntity user = new StandardUserEntity();
         user.setUserAccountEntity(userAcc);
