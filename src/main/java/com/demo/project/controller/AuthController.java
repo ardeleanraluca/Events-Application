@@ -1,8 +1,8 @@
 package com.demo.project.controller;
 
-import com.demo.project.model.AuthResponse;
-import com.demo.project.model.UserAccModel;
-import com.demo.project.model.dto.UserLogin;
+import com.demo.project.dto.AuthResponse;
+import com.demo.project.dto.StandardUserModel;
+import com.demo.project.dto.UserLogin;
 import com.demo.project.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserAccModel userModel) {
-        return authService.register(userModel);
+    public ResponseEntity<String> register(@RequestBody StandardUserModel standardUserModel) {
+        return authService.register(standardUserModel);
     }
 
     @PostMapping("/login")

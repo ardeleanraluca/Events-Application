@@ -1,4 +1,4 @@
-package com.demo.project.model.dto;
+package com.demo.project.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserLogin {
+public class StandardUserModel extends UserAccountModel {
     @NotEmpty
-    private String email;
+    private String dateOfBirth;
+
     @NotEmpty
-    private String password;
+    private String city;
+
+    @NotEmpty
+    private String county;
 }

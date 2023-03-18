@@ -1,7 +1,7 @@
 package com.demo.project.controller;
 
-import com.demo.project.entity.UserAccEntity;
-import com.demo.project.model.UserAccModel;
+import com.demo.project.entity.StandardUserEntity;
+import com.demo.project.dto.StandardUserModel;
 import com.demo.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +22,13 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@RequestBody UserAccModel newUser, @PathVariable Long id) {
+    public ResponseEntity<String> update(@RequestBody StandardUserModel newUser, @PathVariable Long id) {
         return userService.update(newUser, id);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserAccEntity>> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<StandardUserEntity>> getAllStandardUsers() {
+        return userService.getAllStandardUsers();
     }
 
 }

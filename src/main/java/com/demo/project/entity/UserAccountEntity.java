@@ -1,15 +1,19 @@
 package com.demo.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.io.Serializable;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "users")
-public class UserAccEntity {
+@Table(name = "user_accounts")
+
+public class UserAccountEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,8 +28,7 @@ public class UserAccEntity {
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
     private RoleEntity role;
 
 

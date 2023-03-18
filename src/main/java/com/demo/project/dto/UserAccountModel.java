@@ -1,4 +1,4 @@
-package com.demo.project.model;
+package com.demo.project.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccModel {
+public class UserAccountModel {
 
     @NotEmpty
     private String firstName;
