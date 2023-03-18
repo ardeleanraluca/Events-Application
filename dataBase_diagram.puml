@@ -1,8 +1,14 @@
 @startuml
+
 !theme plain
 top to bottom direction
 skinparam linetype ortho
 
+class bought_tickets {
+   type_ticked_id: bigint
+   user_id: bigint
+   id: bigint
+}
 class events {
    category: varchar(255)
    date: varchar(255)
@@ -30,11 +36,9 @@ class roles {
    name: varchar(255)
    id: integer
 }
-class management_tickets {
+class tickets {
    catetogy: varchar(255)
    discount: double precision
-   no_available: integer
-   no_sold: integer
    price: double precision
    event_id: bigint
    id: bigint
@@ -54,12 +58,14 @@ class users {
    id: bigint
 }
 
-events           -[#696969,plain]-^  halls           : "hall_id:id"
+bought_tickets   -[#595959,plain]-^  tickets         : "type_ticked_id:id"
+bought_tickets   -[#595959,plain]-^  users           : "user_id:id"
+events           -[#595959,plain]-^  halls           : "hall_id:id"
 events           -[#595959,plain]-^  organizers      : "organizer_id:id"
 favorite_events  -[#595959,plain]-^  events          : "event_id:id"
 favorite_events  -[#595959,plain]-^  users           : "user_id:id"
 organizers       -[#595959,plain]-^  user_accounts   : "account_id:id"
-management_tickets          -[#595959,plain]-^  events          : "event_id:id"
+tickets          -[#595959,plain]-^  events          : "event_id:id"
 user_accounts    -[#595959,plain]-^  roles           : "role_id:id"
 users            -[#595959,plain]-^  user_accounts   : "account_id:id"
 @enduml

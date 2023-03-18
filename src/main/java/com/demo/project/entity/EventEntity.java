@@ -49,7 +49,7 @@ public class EventEntity {
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    private Set<ManagementTickets> tickets;
+    private Set<TicketEntity> tickets;
 
 
 

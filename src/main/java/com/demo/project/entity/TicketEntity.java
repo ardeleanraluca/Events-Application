@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "management_tickets")
-public class ManagementTickets {
+@Table(name = "tickets")
+public class TicketEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,12 +22,6 @@ public class ManagementTickets {
     private Double price;
 
     private Double discount;
-
-    @Column(nullable = false)
-    private Integer noAvailable;
-
-    @Column(nullable = false)
-    private Integer noSold;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "event_id", nullable = false)

@@ -38,4 +38,8 @@ public class StandardUserEntity {
             inverseJoinColumns = @JoinColumn(name = "event_id"))
     private Set<EventEntity> favoriteEvents;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private Set<BoughtTicketEntity> boughtTickets;
+
 }
