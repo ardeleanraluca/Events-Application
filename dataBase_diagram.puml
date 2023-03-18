@@ -30,7 +30,7 @@ class roles {
    name: varchar(255)
    id: integer
 }
-class tickets {
+class management_tickets {
    catetogy: varchar(255)
    discount: double precision
    no_available: integer
@@ -59,7 +59,7 @@ events           -[#595959,plain]-^  organizers      : "organizer_id:id"
 favorite_events  -[#595959,plain]-^  events          : "event_id:id"
 favorite_events  -[#595959,plain]-^  users           : "user_id:id"
 organizers       -[#595959,plain]-^  user_accounts   : "account_id:id"
-tickets          -[#595959,plain]-^  events          : "event_id:id"
+management_tickets          -[#595959,plain]-^  events          : "event_id:id"
 user_accounts    -[#595959,plain]-^  roles           : "role_id:id"
 users            -[#595959,plain]-^  user_accounts   : "account_id:id"
 @enduml
