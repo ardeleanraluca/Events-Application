@@ -71,9 +71,3 @@ tickets             }--||  events                    : "event_id:id"
 user_accounts       }--||  roles                     : "role_id:id"
 users               ||--||  user_accounts            : "account_id:id"
 @enduml
-
-||--|| ONE TO ONE
-||--} ONE TO MANY
-|--|| MANY TO ONE
-
-- MANY TO MANY se rupe in ONE TO MANY si MANY TO MANY
