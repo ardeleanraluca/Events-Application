@@ -1,4 +1,4 @@
-```plantuml
+<!--
 @startuml
 !define primary_key(x) <b><color:#b8861b><&key></color>x</b>
 !define foreign_key(x)<color:#aaaaaa><&key></color>x
@@ -148,4 +148,4 @@ tickets             }--||  events                    : "event_id:id"
 user_accounts       }--||  roles                     : "role_id:id"
 users               ||--||  user_accounts            : "account_id:id"
 @enduml
-```
+-->
