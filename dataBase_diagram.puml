@@ -32,7 +32,7 @@ class halls {
 }
 class organizers {
    primary_key(id): bigint
-   foreign_key(account_id): bigint <FK>>
+   foreign_key(account_id): bigint <<FK>>
 }
 class roles {
    primary_key(id): bigint
@@ -40,10 +40,11 @@ class roles {
 }
 class tickets {
    primary_key(id): bigint
+   foreign_key(event_id): bigint
    catetogy: varchar(255)
    discount: double precision
    price: double precision
-   event_id: bigint
+
 }
 class user_accounts {
    primary_key(id): bigint
@@ -59,15 +60,20 @@ class users {
    county: varchar(255)
    date_of_birth: varchar(255)
 }
-
-bought_tickets   -[#595959,plain]-^  tickets         : "type_ticked_id:id"
-bought_tickets   -[#595959,plain]-^  users           : "user_id:id"
-events           -[#595959,plain]-^  halls           : "hall_id:id"
-events           -[#595959,plain]-^  organizers      : "organizer_id:id"
-favorite_events  -[#595959,plain]-^  events          : "event_id:id"
-favorite_events  -[#595959,plain]-^  users           : "user_id:id"
-organizers       -[#595959,plain]-^  user_accounts   : "account_id:id"
-tickets          -[#595959,plain]-^  events          : "event_id:id"
-user_accounts    -[#595959,plain]-^  roles           : "role_id:id"
-users            -[#595959,plain]-^  user_accounts   : "account_id:id"
+favorite_events     }--||  events                    : "event_id:id"
+favorite_events     }--||   users                    : "user_id:id"
+bought_tickets      ||--|| tickets                   : "type_ticked_id:id"
+bought_tickets      }--||  users                     : "user_id:id"
+events              }--||  halls                     : "hall_id:id"
+events              }--||  organizers                : "organizer_id:id"
+organizers          ||--||  user_accounts            : "account_id:id"
+tickets             }--||  events                    : "event_id:id"
+user_accounts       }--||  roles                     : "role_id:id"
+users               ||--||  user_accounts            : "account_id:id"
 @enduml
+
+||--|| ONE TO ONE
+||--} ONE TO MANY
+|--|| MANY TO ONE
+
+- MANY TO MANY se rupe in ONE TO MANY si MANY TO MANY
