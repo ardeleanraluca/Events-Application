@@ -99,5 +99,14 @@ table(users) {
 }
 favorite_events     }--||  events                    : "event_id:id"
 favorite_events     }--||   users                    : "user_id:id"
+bought_tickets      ||--|| tickets                   : "type_ticked_id:id"
+bought_tickets      }--||  users                     : "user_id:id"
+events              }--||  halls                     : "hall_id:id"
+events              }--||  organizers                : "organizer_id:id"
+organizers          ||--||  user_accounts            : "account_id:id"
+tickets             }--||  events                    : "event_id:id"
+user_accounts       }--||  roles                     : "role_id:id"
+users               ||--||  user_accounts            : "account_id:id"
+@enduml
 ```
 
