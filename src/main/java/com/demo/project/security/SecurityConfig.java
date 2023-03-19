@@ -63,7 +63,7 @@ public class SecurityConfig {
     }
 
     /**
-     * Configure de authentication (the main strategy interface for authentication) manager based on authentication configuration.
+     * Configures the authentication (the main strategy interface for authentication) manager based on authentication configuration.
      * @param authenticationConfiguration
      * @return AuthenticationManager
      * @throws Exception

@@ -35,4 +35,22 @@ The next most general functionality is aimed at users who are **not guests**, na
 ## Database diagram
 ![Database Diagram](https://www.planttext.com/api/plantuml/svg/hLPDRzim3BtxLx0TCCJ0Yc83EXI6OVIqowwx6xB5s49iCv3aDDdI_pv9iHr_fabHtIoIZu-F8k4NfPdKTLbuTnpNeaBOIb4oUOWtU5ZjVGYJA4of81byIPwVVtutdr-DAGeVtMsq3n-Jg0jUaqIHLKrm6yZS6GTsGPeb1TfSM6cX3x27C8JLds_mcWkDFaIHvztf74j3hc2YyZHjGHCaf3MLm8N4L0kgFBKHrPP9La9XSFLXYq1Iv-HvfnG9rLckOotI3MhbmpyFO52lu7u0YSX4fQsfNur5EqNokETcgFxwRGYEl6k5Si7Db91Y03R5MyCBTwRo6_dah2Yk848oOvNukyWcPHepaeS0TaocEPEh7qzFlhLmOvcvHPLAiRLoJuqvrN9wMx5o3DGMlcOxagR7yK21Fl--6gsexzNSZt70iq4j1ola5TeppYKgDLCUnGgPLfrp2zn9VsDdMPfIVIAzn5bIWLUWNb3-GpFGYTbtkF22X7AL1C2fDabD6ao5ifDwocddO6BgABfsDsBSIDJgOtYwASCCfTzxALWoKLprIcq-fjGhIRwWegNuUTsrOfhzDsNX8XP6DAPrd0YpvIOKHyC5zhmzF1oFHeFppUW4SDzsEH3y_X88kEeNG9fPTHZ3jNjoEHuToE1kZ35SkOjG3Pr5DcCwSyKt66uNB64q6_SzZFFOps3qrx43clDkj87108o0pi_8mSpfU7Elv_8r86xXB0dJJbkBCNRyG3qlM77pK_8V)
 
+## Implementation
+### Security
+Before starting the actual implementation, security configurations were added, in order to have a secure application. To do that, I integrated the Spring Security in my Spring Boot application, adding the security started maven dependecy, which brings in application the default security configuration. At its core, Spring Security is really just a bunch of servlet filters that help us add authentication and authorization to our web application.
 
+#### Filter Security Chains
+The first configuartion of Spring Security is Filter Security Chains.
+When we send a http request to our server, it will go through a set of security filter chains. 
+It defines which URL paths should be secured and which should not, allowing to access some URL only by a type of users. 
+
+#### The UserDetailsService
+This is the main configuration for our application. To load the customer details, we need to implement UserDetailsService interface. It uses spring Security UserDetailsService interface in order to lookup the username, password and Granted Authorities for any user.
+
+#### Autentification Manager and Password Encoder
+The next step was to onfigure an authentication manager with the correct password-encoding schema that will be used for credentials verification.
+In my application, I choose to use the bcrypt password-hashing algorithm.
+
+#### JSON Web Token (JWT)
+The next configuration was to define a new token generator and to do this I used JWT. The generator is used at login.
+We verify the provided credentials using the authentication manager, and in case of success, we generate the JWT token and return it as a response header along with the user identity information in the response body.
