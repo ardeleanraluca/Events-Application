@@ -1,4 +1,4 @@
-<div align="right">
+<div align="justify">
 
 # Events Application
 The project consists of an application that virtually hosts the events that exist at the country level. By means of the application, users are informed of the existence of these events in which they can participate.
