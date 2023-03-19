@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccountModel {
+public class UserAccountDto {
 
     @NotEmpty
     private String firstName;

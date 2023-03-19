@@ -35,10 +35,6 @@ public class EventEntity {
     @ManyToMany(mappedBy = "favoriteEvents")
     private Set<StandardUserEntity> favorites;
 
-//    @ManyToOne
-//    @JoinColumn(name="organizer_id", nullable=false)
-//    private OrganizerEntity organizer;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "organizer_id", nullable = false)
     private OrganizerEntity organizer;

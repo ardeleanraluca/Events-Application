@@ -9,9 +9,18 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+/**
+ * Provides the token for a user.
+ * Contains functions through which certain information can be extracted from token.
+ */
 @Component
 public class JWTGenerator {
 
+    /**
+     * Generate a token based on an authentication object returned in login process and an expiration date.
+     * @param authentication
+     * @return token
+     */
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
         Date currentDate = new Date();
@@ -26,6 +35,11 @@ public class JWTGenerator {
         return token;
     }
 
+    /**
+     * Return the username from a token send as parameter, by parsing it.
+     * @param token
+     * @return username
+     */
     public String getUsernameFromJWT(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(SecurityConstants.JWT_SECRET)
@@ -34,6 +48,11 @@ public class JWTGenerator {
         return claims.getSubject();
     }
 
+    /**
+     * Check if a token send as parameter is valid.
+     * @param token
+     * @return True if the token is valid, otherwise false.
+     */
     public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(SecurityConstants.JWT_SECRET).parseClaimsJws(token);

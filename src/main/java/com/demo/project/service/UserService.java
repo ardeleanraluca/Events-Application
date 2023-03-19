@@ -1,7 +1,7 @@
 package com.demo.project.service;
 
+import com.demo.project.dto.StandardUserDto;
 import com.demo.project.entity.StandardUserEntity;
-import com.demo.project.dto.StandardUserModel;
 import com.demo.project.entity.UserAccountEntity;
 import com.demo.project.repository.RoleRepository;
 import com.demo.project.repository.StandardUserRepository;
@@ -14,7 +14,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-
+/**
+ * This class handles all requests related to users, whatever if they are standard users or organizers.
+ */
 @Component
 public class UserService {
     @Autowired
@@ -28,6 +30,11 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Deletes a user from the database, if it exists.
+     * @param id
+     * @return ResponseEntity - OK if the user was deleted successfully, otherwise BAD_REQUEST.
+     */
     public ResponseEntity<String> delete(Long id) {
         if (standardUserRepository.findById(id).isEmpty()) {
             return new ResponseEntity<>("User doesn't exists", HttpStatus.BAD_REQUEST);
@@ -37,7 +44,13 @@ public class UserService {
         return new ResponseEntity<>("User deleted success!", HttpStatus.OK);
     }
 
-    public ResponseEntity<String> update(StandardUserModel newUser, Long id) {
+    /**
+     * Updates a user's data in database, if it exists.
+     * @param newUser an object that contains all the details of a standard user that will be updated.
+     * @param id The user ID that is being updated.
+     * @return ResponseEntity - OK if the user was updated successfully, otherwise BAD_REQUEST.
+     */
+    public ResponseEntity<String> update(StandardUserDto newUser, Long id) {
         if (userAccountRepository.findById(id).isEmpty()) {
             return new ResponseEntity<>("User doesn't exists", HttpStatus.BAD_REQUEST);
         }
@@ -55,10 +68,13 @@ public class UserService {
         standardUserEntity.setDateOfBirth(newUser.getDateOfBirth());
         standardUserRepository.saveAndFlush(standardUserEntity);
 
-
         return new ResponseEntity<>("User updated success!", HttpStatus.OK);
     }
 
+    /**
+     * Finds all standard user in database and returns them
+     * @return all standard users from database
+     */
     public ResponseEntity<List<StandardUserEntity>> getAllStandardUsers() {
         if (roleRepository.findByName("USER").isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

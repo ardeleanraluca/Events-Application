@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StandardUserModel extends UserAccountModel {
+public class StandardUserDto extends UserAccountDto {
     @NotEmpty
     private String dateOfBirth;
 

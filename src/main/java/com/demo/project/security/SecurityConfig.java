@@ -13,6 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * This class keeps the security configurations for application, and it is annotated with @EnableWebSecurity
+ * to enable Spring Security’s web security support and provide the Spring MVC integration.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -26,6 +30,17 @@ public class SecurityConfig {
         this.authEntryPoint = authEntryPoint;
     }
 
+    /**
+     * This method configures the actual security filter chain.
+     * It defines which URL paths should be secured and which should not,
+     * allowing to access some URL only by a type of users.
+     * So, it handle every authentication or authorization problem there is in your
+     * application, without needing to change your actual application implementation
+     *
+     * @param http
+     * @return SecurityFilterChain configured
+     * @throws Exception
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -41,23 +56,37 @@ public class SecurityConfig {
                 .requestMatchers("/user/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-
                 .httpBasic();
+
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
+    /**
+     * Configure de authentication (the main strategy interface for authentication) manager based on authentication configuration.
+     * @param authenticationConfiguration
+     * @return AuthenticationManager
+     * @throws Exception
+     */
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    /**
+     * Configures the password hashing algorithm for all the password in the application
+     * @return - BCryptPasswordEncoder - use the BCrypt password hashing function
+     */
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures the token interceptor.
+     * @return token interceptor
+     */
     @Bean
     public JWTAuthenticationFilter jwtAuthenticationFilter() {
         return new JWTAuthenticationFilter();
