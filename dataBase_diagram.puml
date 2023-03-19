@@ -11,6 +11,7 @@ table(bought_tickets) {
    primary_key(id): bigint
    foreign_key(type_ticked_id): bigint <<FK>>
    foreign_key(user_id): bigint <<FK>>
+   place: int
 }
 table(events) {
    primary_key(id): bigint
@@ -42,7 +43,7 @@ table(roles) {
 table(tickets) {
    primary_key(id): bigint
    foreign_key(event_id): bigint
-   catetogy: varchar(255)
+   category: varchar(255)
    discount: double precision
    price: double precision
 
