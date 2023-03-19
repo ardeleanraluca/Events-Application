@@ -1,3 +1,5 @@
+<div align="right">
+
 # Events Application
 The project consists of an application that virtually hosts the events that exist at the country level. By means of the application, users are informed of the existence of these events in which they can participate.
 The application can be used by anyone and all the events present in the application will be visible regardless of whether the user has an account or not, but having an account brings some benefits that will be detailed below.
@@ -54,3 +56,5 @@ In my application, I choose to use the bcrypt password-hashing algorithm.
 #### JSON Web Token (JWT)
 The next configuration was to define a new token generator and to do this I used JWT. The generator is used at login.
 We verify the provided credentials using the authentication manager, and in case of success, we generate the JWT token and return it as a response header along with the user identity information in the response body.
+
+</div>
