@@ -26,7 +26,7 @@ The next most general functionality is aimed at users who are **not guests**, na
 - add the event he organizes in the application with the possibility of having different types of tickets.
 - has a section where he can see and edit the organized events, but also how many tickets were sold for each event.
 
-#### _Administrator_
+#### _Admin_
 - create accounts for the organizers as a result of an agreement between the two.
 - delete organizer accounts if the agreement between the two is no longer valid.
 - has access to details about organizers and events.
