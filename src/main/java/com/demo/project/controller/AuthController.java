@@ -1,6 +1,7 @@
 package com.demo.project.controller;
 
 import com.demo.project.dto.AuthResponse;
+import com.demo.project.dto.OrganizerDto;
 import com.demo.project.dto.StandardUserDto;
 import com.demo.project.dto.UserLoginDto;
 import com.demo.project.service.AuthService;
@@ -31,10 +32,24 @@ public class AuthController {
     }
 
     /**
+     * Handles the api call for registration of a new organizer and transfer it to the service layer
+     * if the user which try to make this request is an admin
+     * else it return a bad request
+     */
+    @PostMapping("/registerOrganizer")
+    public ResponseEntity<String> registerOrganizer(@RequestBody OrganizerDto organizerDto) {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN")))
+            return authService.registerOrganizer(organizerDto);
+//        return new ResponseEntity<>("Organizer can not be registered because you are not an admin!", HttpStatus.FORBIDDEN);
+    }
+
+
+    /**
      * Handles the api call for authentication of a user and transfer it to the service layer.
      */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody UserLoginDto userLoginDto){
+    public ResponseEntity<AuthResponse> login(@RequestBody UserLoginDto userLoginDto) {
         return authService.login(userLoginDto);
     }
 

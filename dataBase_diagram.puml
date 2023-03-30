@@ -23,10 +23,7 @@ table(events) {
    hour: varchar(255)
    name: varchar(255)
 }
-table(favorite_events) {
-   foreign_key(primary_key(user_id)): bigint <<FK>>
-   foreign_key(primary_key(event_id)): bigint <<FK>>
-}
+
 table(halls) {
    primary_key(id): bigint
    address: varchar(255)
@@ -62,8 +59,7 @@ table(users) {
    county: varchar(255)
    date_of_birth: varchar(255)
 }
-favorite_events     }--||  events                    : "event_id:id"
-favorite_events     }--||   users                    : "user_id:id"
+
 bought_tickets      ||--|| tickets                   : "type_ticked_id:id"
 bought_tickets      }--||  users                     : "user_id:id"
 events              }--||  halls                     : "hall_id:id"

@@ -32,9 +32,6 @@ public class EventEntity {
     @Column(nullable = false)
     private String hour;
 
-    @ManyToMany(mappedBy = "favoriteEvents")
-    private Set<StandardUserEntity> favorites;
-
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "organizer_id", nullable = false)
     private OrganizerEntity organizer;

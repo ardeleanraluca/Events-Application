@@ -52,8 +52,8 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/user/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
@@ -64,6 +64,7 @@ public class SecurityConfig {
 
     /**
      * Configures the authentication (the main strategy interface for authentication) manager based on authentication configuration.
+     *
      * @param authenticationConfiguration
      * @return AuthenticationManager
      * @throws Exception
@@ -76,6 +77,7 @@ public class SecurityConfig {
 
     /**
      * Configures the password hashing algorithm for all the password in the application
+     *
      * @return - BCryptPasswordEncoder - use the BCrypt password hashing function
      */
     @Bean
@@ -85,6 +87,7 @@ public class SecurityConfig {
 
     /**
      * Configures the token interceptor.
+     *
      * @return token interceptor
      */
     @Bean

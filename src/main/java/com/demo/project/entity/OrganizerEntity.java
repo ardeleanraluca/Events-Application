@@ -21,10 +21,6 @@ public class OrganizerEntity {
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private UserAccountEntity userAccountEntity;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "event_id", referencedColumnName = "id")
-//    private Set<EventEntity> events;
-
     @OneToMany(mappedBy = "organizer", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Set<EventEntity> events;

@@ -1,14 +1,17 @@
 package com.demo.project.service;
 
-import com.demo.project.entity.RoleEntity;
-import com.demo.project.entity.UserAccountEntity;
-import com.demo.project.entity.StandardUserEntity;
 import com.demo.project.dto.AuthResponse;
+import com.demo.project.dto.OrganizerDto;
 import com.demo.project.dto.StandardUserDto;
 import com.demo.project.dto.UserLoginDto;
+import com.demo.project.entity.OrganizerEntity;
+import com.demo.project.entity.RoleEntity;
+import com.demo.project.entity.StandardUserEntity;
+import com.demo.project.entity.UserAccountEntity;
+import com.demo.project.repository.OrganizerRepository;
 import com.demo.project.repository.RoleRepository;
-import com.demo.project.repository.UserAccountRepository;
 import com.demo.project.repository.StandardUserRepository;
+import com.demo.project.repository.UserAccountRepository;
 import com.demo.project.security.JWTGenerator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,9 @@ public class AuthService {
     @Autowired
     private JWTGenerator jwtGenerator;
 
+    @Autowired
+    private OrganizerRepository organizerRepository;
+
 
     /**
      * Registers a standard user and adds it into database.
@@ -70,6 +76,35 @@ public class AuthService {
         standardUserRepository.saveAndFlush(user);
 
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
+    }
+
+
+    /**
+     * Registers a organizer and adds it into database.
+     * @param organizerDto an object that contains all the details of an organizer
+     * @return ResponseEntity - If the organizer was successfully added in the database it return 200 OK, otherwise
+     * the registration will not succeed.
+     */
+    @Transactional
+    public ResponseEntity<String> registerOrganizer(OrganizerDto organizerDto) {
+        if (userAccountRepository.existsByEmail(organizerDto.getEmail())) {
+            return new ResponseEntity<>("An account is already registered with this email!", HttpStatus.BAD_REQUEST);
+        }
+
+        UserAccountEntity userAcc = new UserAccountEntity();
+        userAcc.setName(organizerDto.getFirstName() + " " + organizerDto.getLastName());
+        userAcc.setEmail(organizerDto.getEmail());
+
+        userAcc.setPassword(passwordEncoder.encode((organizerDto.getPassword())));
+        RoleEntity role = roleRepository.findByName("ORGANIZER").get();
+        userAcc.setRole(role);
+        userAccountRepository.saveAndFlush(userAcc);
+
+        OrganizerEntity organizer = new OrganizerEntity();
+        organizer.setUserAccountEntity(userAcc);
+        organizerRepository.saveAndFlush(organizer);
+
+        return new ResponseEntity<>("Organizer registered success!", HttpStatus.OK);
     }
 
 
