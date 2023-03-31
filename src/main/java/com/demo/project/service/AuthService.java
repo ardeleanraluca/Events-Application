@@ -1,9 +1,6 @@
 package com.demo.project.service;
 
-import com.demo.project.dto.AuthResponse;
-import com.demo.project.dto.OrganizerDto;
-import com.demo.project.dto.StandardUserDto;
-import com.demo.project.dto.UserLoginDto;
+import com.demo.project.dto.*;
 import com.demo.project.entity.OrganizerEntity;
 import com.demo.project.entity.RoleEntity;
 import com.demo.project.entity.StandardUserEntity;
@@ -15,6 +12,7 @@ import com.demo.project.repository.UserAccountRepository;
 import com.demo.project.security.JWTGenerator;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,9 +45,13 @@ public class AuthService {
     @Autowired
     private OrganizerRepository organizerRepository;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
 
     /**
      * Registers a standard user and adds it into database.
+     *
      * @param standardUserDto an object that contains all the details of a standard user
      * @return ResponseEntity - If the user was successfully added in the database it return 200 OK, otherwise
      * the registration will not succeed.
@@ -75,12 +77,16 @@ public class AuthService {
         user.setCity(standardUserDto.getCity());
         standardUserRepository.saveAndFlush(user);
 
+        String message = "Welcome " + standardUserDto.getFirstName() + " " + standardUserDto.getLastName();
+        EmailEvent emailEvent = new EmailEvent(this, standardUserDto.getEmail(), "Registration", message);
+        applicationEventPublisher.publishEvent(emailEvent);
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 
 
     /**
      * Registers a organizer and adds it into database.
+     *
      * @param organizerDto an object that contains all the details of an organizer
      * @return ResponseEntity - If the organizer was successfully added in the database it return 200 OK, otherwise
      * the registration will not succeed.
@@ -111,6 +117,7 @@ public class AuthService {
     /**
      * If the principal of the input authentication is valid and verified, AuthenticationManager#authenticate returns an Authentication instance with the authenticated flag set to true and. In this case it is send in the SecurityContextHolder and the token is generated based on it.
      * Otherwise, if the principal is not valid, it will throw an AuthenticationException and that means the user can not log in application because the email or password are wrong.
+     *
      * @param userLoginDto email and password
      * @return AuthResponse - access token and token type if the user login successfully, otherwise it returns 401 Unauthorized.
      */

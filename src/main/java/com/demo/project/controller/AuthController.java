@@ -23,11 +23,13 @@ public class AuthController {
     private AuthService authService;
 
 
+
     /**
      * Handles the api call for registration of a new user and transfer it to the service layer.
      */
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody StandardUserDto standardUserDto) {
+
         return authService.register(standardUserDto);
     }
 
