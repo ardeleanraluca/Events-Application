@@ -80,6 +80,7 @@ public class AuthService {
         String message = "Welcome " + standardUserDto.getFirstName() + " " + standardUserDto.getLastName();
         EmailEvent emailEvent = new EmailEvent(this, standardUserDto.getEmail(), "Registration", message);
         applicationEventPublisher.publishEvent(emailEvent);
+
         return new ResponseEntity<>("User registered success!", HttpStatus.OK);
     }
 

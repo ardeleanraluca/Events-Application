@@ -1,27 +1,69 @@
 package com.demo.project.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
+
+
+/**
+ * This class is a service that deals with sending emails to users.
+ */
 @Service
 public class EmailSenderService {
-    @Autowired
-    private JavaMailSender mailSender;
+    private String username;
+    private String password;
+    private final Properties props;
 
-    public void sendSimpleEmail(String toEmail,
-                                String subject,
-                                String body
+    /**
+     * Instantiates a new email sender service, setting the
+     * application properties to enable sending emails.
+     */
+    public EmailSenderService() {
+        props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com"); //SMTP Host
+        props.put("mail.smtp.port", "587"); //TLS Port
+        props.put("mail.smtp.auth", "true"); //enable authentication
+        props.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+        password = "wmnuqoduhqdnuftr";
+        username ="sararaly.RA@gmail.com";
+    }
+
+    /**
+     * Send a email.
+     *
+     * @param toEmail the email where the message is sent.
+     * @param subject the email's subject.
+     * @param body    the message that is sent.
+     */
+    public void sendEmail(String toEmail,
+                          String subject,
+                          String body
     ) {
+        Authenticator auth = new Authenticator() {
+            //override the getPasswordAuthentication method
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        };
 
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("writersworkspace430@gmail.com");
-        message.setTo(toEmail);
-        message.setText(body);
-        message.setSubject(subject);
-        mailSender.send(message);
-        System.out.println("Mail Send...");
+        Session session = Session.getDefaultInstance(props, auth);
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username, "Events App"));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            message.setSubject(subject);
+            message.setText(body);
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+        } catch (MessagingException | UnsupportedEncodingException mex) {
+            mex.printStackTrace();
+        }
+
     }
 
 }

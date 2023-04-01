@@ -1,7 +1,7 @@
 package com.demo.project;
 
 import com.demo.project.dto.EmailEvent;
-import com.demo.project.service.EmailSenderService;
+import com.demo.project.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,10 +18,15 @@ public class ProjectApplication {
     }
 
 
+    /**
+     * Send mail.
+     *
+     * @param emailEvent the email event
+     */
     @EventListener()
     public void sendMail(EmailEvent emailEvent) {
         System.out.println(emailEvent.getBody());
-//        emailSenderService.sendSimpleEmail(emailEvent.getToEmail(), emailEvent.getSubject(), emailEvent.getBody());
+        emailSenderService.sendEmail(emailEvent.getToEmail(), emailEvent.getSubject(), emailEvent.getBody());
     }
 
 }
