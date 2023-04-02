@@ -1,6 +1,8 @@
 package com.demo.project.service;
 
+import com.demo.project.dto.OrganizerDto;
 import com.demo.project.dto.StandardUserDto;
+import com.demo.project.entity.OrganizerEntity;
 import com.demo.project.entity.StandardUserEntity;
 import com.demo.project.entity.UserAccountEntity;
 import com.demo.project.repository.OrganizerRepository;
@@ -86,6 +88,31 @@ public class UserService {
         standardUserRepository.saveAndFlush(standardUserEntity);
 
         return new ResponseEntity<>("User updated success!", HttpStatus.OK);
+    }
+
+    /**
+     * Updates an organizer's data in database, if it exists.
+     * @param newOrganizer an object that contains all the details of a standard user that will be updated.
+     * @param id The user ID that is being updated.
+     * @return ResponseEntity - OK if the user was updated successfully, otherwise BAD_REQUEST.
+     */
+    public ResponseEntity<String> updateOrganizer(OrganizerDto newOrganizer, Long id) {
+        if (userAccountRepository.findById(id).isEmpty()) {
+            return new ResponseEntity<>("Organizer doesn't exists", HttpStatus.BAD_REQUEST);
+        }
+
+        UserAccountEntity userEntity = userAccountRepository.findById(id).get();
+        OrganizerEntity organizerEntity = organizerRepository.findByUserAccountEntity(userEntity);
+
+        userEntity.setName(newOrganizer.getFirstName() + " " + newOrganizer.getLastName());
+        userEntity.setPassword(passwordEncoder.encode((newOrganizer.getPassword())));
+        userAccountRepository.saveAndFlush(userEntity);
+
+        organizerEntity.setUserAccountEntity(userEntity);
+        organizerRepository.saveAndFlush(organizerEntity);
+
+
+        return new ResponseEntity<>("Organizer updated successfully!", HttpStatus.OK);
     }
 
     /**

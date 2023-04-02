@@ -22,8 +22,6 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-
-
     /**
      * Handles the api call for registration of a new user and transfer it to the service layer.
      */

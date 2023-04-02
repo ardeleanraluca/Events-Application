@@ -72,7 +72,7 @@ The database layer contains all the databases such as MySql, MongoDB, etc. This 
 - The JSP page is returned as Response from the controller.
 
 ## Implementation
-### Security
+### **Security**
 Before starting the actual implementation, security configurations were added, in order to have a secure application. To do that, I integrated the Spring Security in my Spring Boot application, adding the security started maven dependecy, which brings in application the default security configuration. At its core, Spring Security is really just a bunch of servlet filters that help us add authentication and authorization to our web application.
 
 #### Filter Security Chains
@@ -91,7 +91,7 @@ In my application, I choose to use the bcrypt password-hashing algorithm.
 The next configuration was to define a new token generator and to do this I used JWT. The generator is used at login.
 We verify the provided credentials using the authentication manager, and in case of success, we generate the JWT token and return it as a response header along with the user identity information in the response body.
 
-### Observer Design Pattern -  Send Mails
+### **Observer Design Pattern -  Send Mails**
 I used the Application Events of the Spring Framework that is an implementation of the Observer pattern for the part of the application that handles sending emails. The Observer pattern serves as a means to exchange information between loosely coupled components.
 
 #### Application Events
@@ -112,5 +112,37 @@ In the class where I want to generate a sending of an email I have an Applicatio
 
 ``` applicationEventPublisher.publishEvent(emailEvent);```
 
-The application that is an observer is able to listen through the annotation @EventListener() at the method that call the sendMail method from EmailSenderService
+The application that is an observer is able to listen through the annotation @EventListener() at the method that call the sendMail method from EmailSenderService.
+
+### **Endpoints**
+Controller classes handle the HTTP requests, translates the JSON parameter to object, authenticates the request and transfer it to the service layer.
+
+#### AuthController and AuthService
+AuthController and AuthService handle all the requests related to authentication and registration in application.
+- ```public ResponseEntity<String> register(@RequestBody StandardUserDto standardUserDto)``` - Registers a standard user and adds it to the database, while creating an account which is also saved to the database.
+- ```public ResponseEntity<String> registerOrganizer(OrganizerDto organizerDto)``` - An organizer is registered in application by admin and added to the database, while creating an account which is also saved to the database.
+- ```public ResponseEntity<AuthResponse> login(UserLoginDto userLoginDto)``` - This endpoint try to authenticate a user in application. If it succeed a token is generated.
+
+
+#### UserController and UserService
+UserController and UserService handle all the requests related to users, whatever if they are standard users or organizers.
+- ```public ResponseEntity<String> update(StandardUserDto newUser, Long id)``` - Updates a user's data in database, if it exists. This method can update both the user account data and the personal data of a standard user.
+- ```public ResponseEntity<String> updateOrganizer(OrganizerDto newOrganizer, Long id)``` - Updates an organizer's data in database, if it exists. This method can update both the user account data and the personal data of an organizer.
+- ```public ResponseEntity<String> delete(Long id)``` - Deletes a standard user from the database, if it exists. This action also involves the deletion of the associated user account.
+- ``` public ResponseEntity<String> deleteOrganizer(Long id)``` - Deletes an organizer from the database, if it exists. This action also involves the deletion of the associated user account and only an admin is able to do this.
+- ```public ResponseEntity<List<StandardUserEntity>> getAllStandardUsers()``` - Finds all standard user in database and returns them.
+
+#### EventController and EventService
+EventController and EventService handle all the requests related to events.
+- ```public ResponseEntity<String> createEvent(EventDto eventDto)``` - Create an event and adds it into database. This action also involves the creation of tickets associated with the event and can be made only by organizers.
+- ```public ResponseEntity<String> updateEvent(EventDto eventDto, Long id)``` - Update an event's data in database, if it exists. This action can be made only by organizers.
+- ``` public ResponseEntity<String> deleteEvent(Long id)``` - Deletes an event from the database, if it exists.  This action also involves the deletion of the associated tickets. 
+- ``` public ResponseEntity<List<EventEntity>> getEventsByCity(String city)``` - Finds all events from a city in database and returns them.
+  
+#### LocationController and LocationService
+LocationController and LocationService handle all the requests related to events'location.
+- ```public ResponseEntity<String> createLocation(LocationDto locationDto)``` - Creates a location for an event and adds it into database, if that location does no already exist in that city.
+- ``` public ResponseEntity<String> deleteLocation(Long id)``` - Deletes a location from the database, if it exists and if it is not assigned to any event.
+
+A location should not be editable for security reasons. Once created, it cannot be modified to avoid any mistakes that may affect the event.
 </div>

@@ -1,5 +1,6 @@
 package com.demo.project.controller;
 
+import com.demo.project.dto.OrganizerDto;
 import com.demo.project.entity.StandardUserEntity;
 import com.demo.project.dto.StandardUserDto;
 import com.demo.project.service.UserService;
@@ -43,6 +44,15 @@ public class UserController {
     public ResponseEntity<String> update(@RequestBody StandardUserDto newUser, @PathVariable Long id) {
         return userService.update(newUser, id);
     }
+
+    /**
+     * Handles the api call to update an organizer's data and transfer it to the service layer.
+     */
+    @PutMapping("updateOrganizer/{id}")
+    public ResponseEntity<String> updateOrganizer(@RequestBody OrganizerDto newOrganizer, @PathVariable Long id) {
+        return userService.updateOrganizer(newOrganizer, id);
+    }
+
 
     /**
      * Handles the api call for returning all standard users and transfer it to the service layer.
