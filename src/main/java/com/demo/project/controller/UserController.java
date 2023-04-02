@@ -28,6 +28,15 @@ public class UserController {
     }
 
     /**
+     * Handles the api call for deleting of an organizer with his events and transfer it to the service layer.
+     */
+    @DeleteMapping("/deleteOrganizer/{id}")
+    public ResponseEntity<String> deleteOrganizer(@PathVariable Long id) {
+        return userService.deleteOrganizer(id);
+    }
+
+
+    /**
      * Handles the api call to update a user's data and transfer it to the service layer.
      */
     @PutMapping("/{id}")

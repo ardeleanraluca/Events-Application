@@ -3,6 +3,7 @@ package com.demo.project.service;
 import com.demo.project.dto.StandardUserDto;
 import com.demo.project.entity.StandardUserEntity;
 import com.demo.project.entity.UserAccountEntity;
+import com.demo.project.repository.OrganizerRepository;
 import com.demo.project.repository.RoleRepository;
 import com.demo.project.repository.StandardUserRepository;
 import com.demo.project.repository.UserAccountRepository;
@@ -29,6 +30,8 @@ public class UserService {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private OrganizerRepository organizerRepository;
 
     /**
      * Deletes a user from the database, if it exists.
@@ -42,6 +45,20 @@ public class UserService {
 
         standardUserRepository.deleteById(id);
         return new ResponseEntity<>("User deleted success!", HttpStatus.OK);
+    }
+
+    /**
+     * Deletes an organizer with his events from the database, if it exists.
+     * @param id
+     * @return ResponseEntity - OK if the organizer was deleted successfully, otherwise BAD_REQUEST.
+     */
+    public ResponseEntity<String> deleteOrganizer(Long id) {
+        if (organizerRepository.findById(id).isEmpty()) {
+            return new ResponseEntity<>("Organizer doesn't exists", HttpStatus.BAD_REQUEST);
+        }
+
+        organizerRepository.deleteById(id);
+        return new ResponseEntity<>("Organizer and his events deleted successfully!", HttpStatus.OK);
     }
 
     /**

@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class handles all requests related to events'location.
+ */
 @Component
 public class LocationService {
     @Autowired
@@ -18,6 +21,13 @@ public class LocationService {
     @Autowired
     private EventRepository eventRepository;
 
+    /**
+     * Create a location for an event and adds it into database
+     *
+     * @param locationDto an object that contains all the details of an location
+     * @return ResponseEntity - If the location was successfully added in the database it return 200 OK, otherwise
+     * the registration will not succeed.
+     */
     @Transactional
     public ResponseEntity<String> createLocation(LocationDto locationDto) {
         if (locationRepository.findByNameAndCountyAndCity(
@@ -34,7 +44,12 @@ public class LocationService {
         return new ResponseEntity<>("Location created successfully!", HttpStatus.OK);
     }
 
-    /// can not delete
+    /**
+     * Deletes a location from the database, if it exists.
+     *
+     * @param id the location ID that is being deleted.
+     * @return ResponseEntity - OK if the event was deleted successfully, otherwise BAD_REQUEST.
+     */
     @Transactional
     public ResponseEntity<String> deleteLocation(Long id) {
         if (locationRepository.findById(id).isEmpty()) {

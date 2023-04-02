@@ -1,7 +1,7 @@
 <div align="justify">
 
 # Events Application
-The project consists of an application that virtually hosts the events that exist at the country level. By means of the application, users are informed of the existence of these events in which they can participate.
+The project consists of an application that virtually hosts the events that exist at the country level. Through the application, users are informed of the existence of these events in which they can participate.
 The application can be used by anyone and all the events present in the application will be visible regardless of whether the user has an account or not, but having an account brings some benefits that will be detailed below.
 
 
@@ -19,7 +19,6 @@ The next most general functionality is aimed at users who are **not guests**, na
 - can register in application.
 
 #### _Standard User_
-- can add events he is interested in to a Favorites section.
 - can purchase tickets to the event, and depending on the event there may be several types of tickets to choose from.
 - at some events, the user must choose the place among the available ones or it will be randomly generated.
 - depending on the previous events in which the user participated, certain events are suggested to him when he logs into the application.
@@ -30,12 +29,47 @@ The next most general functionality is aimed at users who are **not guests**, na
 
 #### _Admin_
 - create accounts for the organizers as a result of an agreement between the two.
-- delete organizer accounts if the agreement between the two is no longer valid.
+- delete organizer accounts and associated events if the agreement between the two is no longer valid.
 - has access to details about organizers and events.
 - can generate certain reports.
 
 ## Database diagram
 ![Database Diagram](http://www.plantuml.com/plantuml/svg/hPJ1Rjiy3CVlVWgs7_2X1bOK6z2XC0oZfrrstTsGRSOMOek6HAVnbhpxB3VIuaJ5ac2-cHH__9CYzMfOQ1wwDhghS2KLGgzb9_IOht5ysCQG5bbQKaiw-QzuUVdwUVhzVt9bwTDipRRfKv7vu1LfbBKw1Bj0CN-dWJw8HT6YpOMA9O-mXJI5Xn-VuAsHZ35aMHJTSOCTGjyAgIAc7fYW86Rge98QIvQa8hEMgXTQTD1EN1vx1DBSK1IzfoXeg1lEMPPhP1F3hmXWKQ-iuWGAMKl5asjHZQMzHrRvqR59whVlMNPwUZ2emyTi2IKcO5Fi3xfmW-fQFOresmk4aAw5aZy_L5CAnfhqcC16wB8H-k7BytDiFTNa2LZHb5hsjjtdpeO6VMvLeZi5xTsDj5GAoxgW-036wgT1yHYmov1LL9L6Om8QAJSesFY4xcfy_wwy7b7Eoa9TTsXDBTvMjoFSDCYumQMkluo1D7Cb2LGqJ4cdD5XA8qaTSfOOS7c9yo8Scd6bKDkVIUUyAbYZZe_65ZiXsuj6pUOJnhoHhfQUXSH_Txj-ziAJ6jwpd5Pv8JKtvtkoVBDW_dQxnyVT3fpj_4lWVlbU9RAw3wBsCmdc7W24KTRf67PwbYazm-zoY66VgmiOVzOjmF1E1mgSThs1nU2TW0vcXmdqqUa9IVKOw_IGG3u7iOFyONEjyvZX3zvUpokgQkZQtm00)
+
+## Architecture
+The Spring Boot follows a **layered architecture** in which each layer communicates to other layers(Above or below in hierarchical order).
+### Spring Boot Layers
+
+The spring boot consists of the following four layers:
+- Presentation Layer – Authentication & Json Translation
+- Business Layer – Business Logic, Validation & Authorization
+- Persistence Layer – Storage Logic
+- Database Layer – Actual Database
+
+![img.png](img.png)
+
+#### 1. Presentation Layer
+
+The presentation layer is the top layer of the spring boot architecture. It consists of Views. i.e., the front-end part of the application. It handles the HTTP requests and performs authentication. It is responsible for converting the JSON field’s parameter to Java Objects and vice-versa. Once it performs the authentication of the request it passes it to the next layer. i.e., the business layer.
+
+#### 2. Business Layer
+
+The business layer contains all the business logic. It consists of services classes. It is responsible for validation and authorization.
+
+#### 3. Persistence Layer
+
+The persistence layer contains all the database storage logic. It is responsible for converting business objects to the database row and vice-versa.
+
+#### 4. Database Layer
+
+The database layer contains all the databases such as MySql, MongoDB, etc. This layer can contain multiple databases. It is responsible for performing the CRUD operations.
+
+### Spring Boot Flow Architecture
+![img_3.png](img_3.png)
+- The Client makes an HTTP request(GET, PUT, POST, etc.)
+- The HTTP request is forwarded to the Controller. The controller maps the request. It processes the handles and calls the server logic.
+- The business logic is performed in the Service layer. The spring boot performs all the logic over the data of the database which is mapped to the spring boot model class through Java Persistence Library(JPA).
+- The JSP page is returned as Response from the controller.
 
 ## Implementation
 ### Security
@@ -57,4 +91,26 @@ In my application, I choose to use the bcrypt password-hashing algorithm.
 The next configuration was to define a new token generator and to do this I used JWT. The generator is used at login.
 We verify the provided credentials using the authentication manager, and in case of success, we generate the JWT token and return it as a response header along with the user identity information in the response body.
 
+### Observer Design Pattern -  Send Mails
+I used the Application Events of the Spring Framework that is an implementation of the Observer pattern for the part of the application that handles sending emails. The Observer pattern serves as a means to exchange information between loosely coupled components.
+
+#### Application Events
+The event publisher (subject) publishes an event, while the event listener (observer) only receives the specific event if the event listener listens for that specific type of event.
+The application event capability of the Spring framework is synchronous by default. This implies the publisher method blocks until all registered listeners have processed the event.
+
+My application is able to send a "welcome" mail to all users that finish successfully their registration.
+
+#### EmailEvent Class
+The EmailEvent is an application event and extends the ApplicationEvent abstract class. The EmailEvent class contains three String properties called "toEmail", "subject", "body" that store the event data.
+
+The ApplicationEvent class is abstract since it doesn’t make sense for generic events to be published directly.
+
+#### EmailSenderService class
+The EmailSenderService is a service class that deals with sending emails to users. In its constructor are configured the application properties that enable sending emails, and it also has a method that handles the actual sending of an email. 
+
+In the class where I want to generate a sending of an email I have an ApplicationEventPublisher object that will notify the application with an EventEmail to send mail.
+
+``` applicationEventPublisher.publishEvent(emailEvent);```
+
+The application that is an observer is able to listen through the annotation @EventListener() at the method that call the sendMail method from EmailSenderService
 </div>

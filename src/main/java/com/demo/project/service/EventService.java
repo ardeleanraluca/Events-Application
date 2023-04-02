@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class handles all requests related to events.
+ */
 @Component
 public class EventService {
     @Autowired
@@ -30,6 +33,13 @@ public class EventService {
     @Autowired
     private TicketRepository ticketRepository;
 
+    /**
+     * Create an event and adds it into database
+     *
+     * @param eventDto an object that contains all the details of an event
+     * @return ResponseEntity - If the event was successfully added in the database it return 200 OK, otherwise
+     * the registration will not succeed.
+     */
     @Transactional
     public ResponseEntity<String> createEvent(EventDto eventDto) {
         EventEntity eventEntity = new EventEntity();
@@ -65,6 +75,13 @@ public class EventService {
 
     }
 
+    /**
+     * Update an event's data in database, if it exists.
+     *
+     * @param eventDto an object that contains all the details of an event that will be updated.
+     * @param id The event ID that is being updated.
+     * @return ResponseEntity - OK if the event was updated successfully, otherwise BAD_REQUEST.
+     */
     @Transactional
     public ResponseEntity<String> updateEvent(EventDto eventDto, Long id) {
         if (eventRepository.findById(id).isEmpty()) {
@@ -100,6 +117,12 @@ public class EventService {
 
     }
 
+    /**
+     * Deletes an event from the database, if it exists.
+     *
+     * @param id the event ID that is being deleted.
+     * @return ResponseEntity - OK if the event was deleted successfully, otherwise BAD_REQUEST.
+     */
     public ResponseEntity<String> deleteEvent(Long id) {
         if (eventRepository.findById(id).isEmpty()) {
             return new ResponseEntity<>("Event doesn't exists", HttpStatus.BAD_REQUEST);
@@ -109,6 +132,12 @@ public class EventService {
         return new ResponseEntity<>("Event deleted successfully!", HttpStatus.OK);
     }
 
+    /**
+     * Finds all events from a city in database and returns them.
+     *
+     * @param city the city
+     * @return the events in that city
+     */
     public ResponseEntity<List<EventEntity>> getEventsByCity(String city) {
         List<EventEntity> eventEntities = eventRepository.findAllByLocation_City(city);
         return new ResponseEntity<>(eventEntities, HttpStatus.OK);
