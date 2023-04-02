@@ -111,6 +111,10 @@ public class AuthService {
         organizer.setUserAccountEntity(userAcc);
         organizerRepository.saveAndFlush(organizer);
 
+        String message = "Welcome " + organizerDto.getFirstName() + " " + organizerDto.getLastName();
+        EmailEvent emailEvent = new EmailEvent(this, organizerDto.getEmail(), "Registration", message);
+        applicationEventPublisher.publishEvent(emailEvent);
+
         return new ResponseEntity<>("Organizer registered success!", HttpStatus.OK);
     }
 
