@@ -1,11 +1,12 @@
 package com.demo.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,5 +24,6 @@ public class OrganizerEntity {
 
     @OneToMany(mappedBy = "organizer", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    private Set<EventEntity> events;
+    @JsonManagedReference
+    private List<EventEntity> events;
 }

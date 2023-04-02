@@ -24,8 +24,11 @@ table(events) {
    name: varchar(255)
 }
 
-table(halls) {
+table(locations) {
    primary_key(id): bigint
+   name: varchar(255)
+   county: varchar(255)
+   city: varchar(255)
    address: varchar(255)
    no_seats: bigint
 }
@@ -62,7 +65,7 @@ table(users) {
 
 bought_tickets      ||--|| tickets                   : "type_ticked_id:id"
 bought_tickets      }--||  users                     : "user_id:id"
-events              }--||  halls                     : "hall_id:id"
+events              }--||  locations                 : "hall_id:id"
 events              }--||  organizers                : "organizer_id:id"
 organizers          ||--||  user_accounts            : "account_id:id"
 tickets             }--||  events                    : "event_id:id"

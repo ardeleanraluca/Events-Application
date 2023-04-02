@@ -1,11 +1,13 @@
 package com.demo.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -34,15 +36,18 @@ public class EventEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "organizer_id", nullable = false)
+    @JsonBackReference
     private OrganizerEntity organizer;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "hall_id", referencedColumnName = "id")
-    private HallEntity hall;
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    @JsonManagedReference
+    private LocationEntity location;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
-    private Set<TicketEntity> tickets;
+    @JsonManagedReference
+    private List<TicketEntity> tickets;
 
 
 

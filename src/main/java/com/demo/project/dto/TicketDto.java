@@ -5,12 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrganizerDto extends UserAccountDto {
-    private List<EventDto> events;
+public class TicketDto {
+
+    private String category;
+
+    private Double price;
+
+    private Double discount;
+
+
 }
