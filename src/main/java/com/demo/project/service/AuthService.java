@@ -63,8 +63,9 @@ public class AuthService {
         }
 
         UserAccountEntity userAcc = new UserAccountEntity();
-        userAcc.setName(standardUserDto.getFirstName() + " " + standardUserDto.getLastName());
-        userAcc.setEmail(standardUserDto.getEmail());
+        userAcc.setFirstName(standardUserDto.getFirstName());
+        userAcc.setLastName(standardUserDto.getLastName());
+        userAcc.setEmail(standardUserDto.getEmail().toLowerCase());
         userAcc.setPassword(passwordEncoder.encode((standardUserDto.getPassword())));
         RoleEntity role = roleRepository.findByName("USER").get();
         userAcc.setRole(role);
@@ -72,7 +73,6 @@ public class AuthService {
 
         StandardUserEntity user = new StandardUserEntity();
         user.setUserAccountEntity(userAcc);
-        user.setDateOfBirth(standardUserDto.getDateOfBirth());
         user.setCounty(standardUserDto.getCounty());
         user.setCity(standardUserDto.getCity());
         standardUserRepository.saveAndFlush(user);
@@ -99,8 +99,9 @@ public class AuthService {
         }
 
         UserAccountEntity userAcc = new UserAccountEntity();
-        userAcc.setName(organizerDto.getFirstName() + " " + organizerDto.getLastName());
         userAcc.setEmail(organizerDto.getEmail());
+        userAcc.setFirstName(organizerDto.getFirstName());
+        userAcc.setLastName(organizerDto.getLastName());
 
         userAcc.setPassword(passwordEncoder.encode((organizerDto.getPassword())));
         RoleEntity role = roleRepository.findByName("ORGANIZER").get();
@@ -126,13 +127,25 @@ public class AuthService {
      * @param userLoginDto email and password
      * @return AuthResponse - access token and token type if the user login successfully, otherwise it returns 401 Unauthorized.
      */
-    public ResponseEntity<AuthResponse> login(UserLoginDto userLoginDto) {
+    public ResponseEntity<UserAccountDto> login(UserLoginDto userLoginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        userLoginDto.getEmail(),
+                        userLoginDto.getEmail().toLowerCase(),
                         userLoginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        System.out.println(authentication.getAuthorities());
         String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
+
+        UserAccountEntity userAccount = userAccountRepository.findByEmail(userLoginDto.getEmail().toLowerCase()).get();
+
+        String roleType = String.valueOf(authentication.getAuthorities().stream().toList().get(0));
+        if (roleType.equals("ORGANIZER")) {
+            return new ResponseEntity<>(new OrganizerDto(organizerRepository.findByUserAccountEntity(userAccount)), HttpStatus.OK);
+
+        } else if (roleType.equals("USER")) {
+            return new ResponseEntity<>(new StandardUserDto(standardUserRepository.findByUserAccountEntity(userAccount)), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new UserAccountDto(userAccount), HttpStatus.OK);
+        }
     }
 }

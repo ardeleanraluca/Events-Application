@@ -62,7 +62,6 @@ public class EventService {
 
         for (TicketDto ticketDto : ticketDtos) {
             TicketEntity ticketEntity = new TicketEntity();
-            ticketEntity.setCategory(ticketDto.getCategory());
             ticketEntity.setDiscount(ticketDto.getDiscount());
             ticketEntity.setPrice(ticketDto.getPrice());
             ticketEntity.setEvent(eventEntity);
@@ -105,7 +104,6 @@ public class EventService {
 
         for (TicketDto ticketDto : ticketDtos) {
             TicketEntity ticketEntity = new TicketEntity();
-            ticketEntity.setCategory(ticketDto.getCategory());
             ticketEntity.setDiscount(ticketDto.getDiscount());
             ticketEntity.setPrice(ticketDto.getPrice());
             ticketEntity.setEvent(eventEntity);

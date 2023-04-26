@@ -1,9 +1,6 @@
 package com.demo.project.controller;
 
-import com.demo.project.dto.AuthResponse;
-import com.demo.project.dto.OrganizerDto;
-import com.demo.project.dto.StandardUserDto;
-import com.demo.project.dto.UserLoginDto;
+import com.demo.project.dto.*;
 import com.demo.project.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +46,7 @@ public class AuthController {
      * Handles the api call for authentication of a user and transfer it to the service layer.
      */
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody UserLoginDto userLoginDto) {
+    public ResponseEntity<UserAccountDto> login(@RequestBody UserLoginDto userLoginDto) {
         return authService.login(userLoginDto);
     }
 

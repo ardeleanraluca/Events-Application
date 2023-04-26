@@ -37,6 +37,7 @@ public class UserService {
 
     /**
      * Deletes a user from the database, if it exists.
+     *
      * @param id
      * @return ResponseEntity - OK if the user was deleted successfully, otherwise BAD_REQUEST.
      */
@@ -51,6 +52,7 @@ public class UserService {
 
     /**
      * Deletes an organizer with his events from the database, if it exists.
+     *
      * @param id
      * @return ResponseEntity - OK if the organizer was deleted successfully, otherwise BAD_REQUEST.
      */
@@ -65,8 +67,9 @@ public class UserService {
 
     /**
      * Updates a user's data in database, if it exists.
+     *
      * @param newUser an object that contains all the details of a standard user that will be updated.
-     * @param id The user ID that is being updated.
+     * @param id      The user ID that is being updated.
      * @return ResponseEntity - OK if the user was updated successfully, otherwise BAD_REQUEST.
      */
     public ResponseEntity<String> update(StandardUserDto newUser, Long id) {
@@ -77,14 +80,14 @@ public class UserService {
         UserAccountEntity userEntity = userAccountRepository.findById(id).get();
         StandardUserEntity standardUserEntity = standardUserRepository.findByUserAccountEntity(userEntity);
 
-        userEntity.setName(newUser.getFirstName() + " " + newUser.getLastName());
+        userEntity.setFirstName(newUser.getFirstName());
+        userEntity.setLastName(newUser.getLastName());
         userEntity.setPassword(passwordEncoder.encode((newUser.getPassword())));
         userAccountRepository.saveAndFlush(userEntity);
 
         standardUserEntity.setUserAccountEntity(userEntity);
         standardUserEntity.setCounty(newUser.getCounty());
         standardUserEntity.setCity(newUser.getCity());
-        standardUserEntity.setDateOfBirth(newUser.getDateOfBirth());
         standardUserRepository.saveAndFlush(standardUserEntity);
 
         return new ResponseEntity<>("User updated success!", HttpStatus.OK);
@@ -92,8 +95,9 @@ public class UserService {
 
     /**
      * Updates an organizer's data in database, if it exists.
+     *
      * @param newOrganizer an object that contains all the details of a standard user that will be updated.
-     * @param id The user ID that is being updated.
+     * @param id           The user ID that is being updated.
      * @return ResponseEntity - OK if the user was updated successfully, otherwise BAD_REQUEST.
      */
     public ResponseEntity<String> updateOrganizer(OrganizerDto newOrganizer, Long id) {
@@ -104,7 +108,8 @@ public class UserService {
         UserAccountEntity userEntity = userAccountRepository.findById(id).get();
         OrganizerEntity organizerEntity = organizerRepository.findByUserAccountEntity(userEntity);
 
-        userEntity.setName(newOrganizer.getFirstName() + " " + newOrganizer.getLastName());
+        userEntity.setFirstName(newOrganizer.getFirstName());
+        userEntity.setLastName(newOrganizer.getLastName());
         userEntity.setPassword(passwordEncoder.encode((newOrganizer.getPassword())));
         userAccountRepository.saveAndFlush(userEntity);
 
@@ -117,6 +122,7 @@ public class UserService {
 
     /**
      * Finds all standard user in database and returns them
+     *
      * @return all standard users from database
      */
     public ResponseEntity<List<StandardUserEntity>> getAllStandardUsers() {

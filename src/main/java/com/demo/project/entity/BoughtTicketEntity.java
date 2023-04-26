@@ -22,6 +22,4 @@ public class BoughtTicketEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private StandardUserEntity user;
-
-    private Integer place;
 }

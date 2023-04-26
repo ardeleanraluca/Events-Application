@@ -1,5 +1,6 @@
 package com.demo.project.dto;
 
+import com.demo.project.entity.LocationEntity;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
@@ -20,5 +21,13 @@ public class LocationDto {
     private String county;
     @NotEmpty
     private String city;
+
+    public LocationDto(LocationEntity locationEntity) {
+        this.noSeats = locationEntity.getNoSeats();
+        this.address = locationEntity.getAddress();
+        this.name = locationEntity.getName();
+        this.county = locationEntity.getCounty();
+        this.city = locationEntity.getCity();
+    }
 
 }

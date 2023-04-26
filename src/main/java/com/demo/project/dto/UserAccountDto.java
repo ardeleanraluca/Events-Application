@@ -1,5 +1,6 @@
 package com.demo.project.dto;
 
+import com.demo.project.entity.UserAccountEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -24,4 +25,14 @@ public class UserAccountDto {
     @NotEmpty(message = "Password should not be empty")
     private String password;
 
+    @NotEmpty
+    private String role;
+
+    public UserAccountDto(UserAccountEntity userAccountEntity) {
+        this.firstName = userAccountEntity.getFirstName();
+        this.lastName = userAccountEntity.getLastName();
+        this.email = userAccountEntity.getEmail();
+        this.password = userAccountEntity.getPassword();
+        this.role = userAccountEntity.getRole().getName();
+    }
 }

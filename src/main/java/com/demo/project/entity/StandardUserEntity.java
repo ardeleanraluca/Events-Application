@@ -28,10 +28,6 @@ public class StandardUserEntity {
     @Column(nullable = false)
     private String county;
 
-    @Column(nullable = false)
-    private String dateOfBirth;
-
-
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<BoughtTicketEntity> boughtTickets;

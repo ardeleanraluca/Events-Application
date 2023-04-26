@@ -26,4 +26,6 @@ public class OrganizerEntity {
             cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<EventEntity> events;
+
+
 }

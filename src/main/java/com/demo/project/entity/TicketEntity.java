@@ -17,9 +17,6 @@ public class TicketEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String category;
-
-    @Column(nullable = false)
     private Double price;
 
     private Double discount;

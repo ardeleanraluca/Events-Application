@@ -1,5 +1,6 @@
 package com.demo.project.dto;
 
+import com.demo.project.entity.TicketEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +13,14 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TicketDto {
 
-    private String category;
-
     private Double price;
 
     private Double discount;
+
+    public TicketDto(TicketEntity ticketEntity) {
+        this.price = ticketEntity.getPrice();
+        this.discount = ticketEntity.getDiscount();
+    }
 
 
 }

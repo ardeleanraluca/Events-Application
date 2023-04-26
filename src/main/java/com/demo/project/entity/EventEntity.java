@@ -34,6 +34,9 @@ public class EventEntity {
     @Column(nullable = false)
     private String hour;
 
+    @Column()
+    private String imgUrl;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "organizer_id", nullable = false)
     @JsonBackReference
