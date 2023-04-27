@@ -21,6 +21,8 @@ public class LocationController {
 
     /**
      * Handles the api call for creating a location for an event and transfer it to the service layer.
+     *
+     * @return the response entity - OK if the location was created successfully, otherwise CREATED.
      */
     @PostMapping("/createLocation")
     public ResponseEntity<LocationDto> createLocation(@RequestBody LocationDto locationDto) {
@@ -34,6 +36,8 @@ public class LocationController {
 
     /**
      * Handles the api call for deleting a location and transfer it to the service layer.
+     *
+     * @return the response entity - OK if the location was deleted successfully, otherwise BAD_REQUEST.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteLocation(@PathVariable Long id) {

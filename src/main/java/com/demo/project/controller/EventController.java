@@ -22,6 +22,8 @@ public class EventController {
 
     /**
      * Handles the api call for creating an event and transfer it to the service layer.
+     *
+     * @return the response entity - CREATED if the event was created successfully
      */
     @PostMapping("/createEvent")
     public ResponseEntity<EventDto> createEvent(@RequestBody EventDto eventDto) {
@@ -31,6 +33,8 @@ public class EventController {
 
     /**
      * Handles the api call to update an event and transfer it to the service layer.
+     *
+     * @return the response entity - OK if the event was updated successfully, otherwise BAD_REQUEST.
      */
     @PutMapping("/{id}")
     public ResponseEntity<EventDto> updateEvent(@RequestBody EventDto eventDto, @PathVariable Long id) {
@@ -45,6 +49,8 @@ public class EventController {
 
     /**
      * Handles the api call for deleting an event and transfer it to the service layer.
+     *
+     * @return the response entity - OK if the event was deleted successfully, otherwise BAD_REQUEST.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEvent(@PathVariable Long id) {
@@ -59,6 +65,8 @@ public class EventController {
 
     /**
      * Handles the api call for returning all events from a specified city and transfer it to the service layer.
+     *
+     * @return the response entity - OK if the user was updated successfully, otherwise BAD_REQUEST.
      */
     @GetMapping("")
     public ResponseEntity<List<EventDto>> getEventsByCity(@RequestParam("city") String city) {

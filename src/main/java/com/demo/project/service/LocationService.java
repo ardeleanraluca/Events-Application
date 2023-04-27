@@ -27,8 +27,8 @@ public class LocationService implements LocationSeviceInterface {
      * Create a location for an event and adds it into database
      *
      * @param locationDto an object that contains all the details of an location
-     * @return ResponseEntity - If the location was successfully added in the database it return 200 OK, otherwise
-     * the registration will not succeed.
+     * @return LocationDto - If the location was successfully added in the database it returns created location, otherwise
+     * the registration will not succeed and it returns null.
      */
     @Transactional
     public LocationDto createLocation(LocationDto locationDto) {
@@ -52,7 +52,7 @@ public class LocationService implements LocationSeviceInterface {
      * Deletes a location from the database, if it exists.
      *
      * @param id the location ID that is being deleted.
-     * @return ResponseEntity - OK if the event was deleted successfully, otherwise BAD_REQUEST.
+     * @return boolean - true if the event was deleted successfully, otherwise false.
      */
     @Transactional
     public boolean deleteLocation(Long id) {

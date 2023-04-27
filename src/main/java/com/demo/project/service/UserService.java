@@ -37,7 +37,7 @@ public class UserService implements UserServiceInterface {
      * Deletes a user from the database, if it exists.
      *
      * @param id
-     * @return ResponseEntity - OK if the user was deleted successfully, otherwise BAD_REQUEST.
+     * @return boolean - true if the user was deleted successfully, otherwise false.
      */
     public boolean delete(Long id) {
         if (standardUserRepository.findById(id).isEmpty()) {
@@ -52,7 +52,7 @@ public class UserService implements UserServiceInterface {
      * Deletes an organizer with his events from the database, if it exists.
      *
      * @param id
-     * @return ResponseEntity - OK if the organizer was deleted successfully, otherwise BAD_REQUEST.
+     * @return boolean - true if the user was deleted successfully, otherwise false.
      */
     public boolean deleteOrganizer(Long id) {
         if (organizerRepository.findById(id).isEmpty()) {
@@ -68,7 +68,7 @@ public class UserService implements UserServiceInterface {
      *
      * @param newUser an object that contains all the details of a standard user that will be updated.
      * @param id      The user ID that is being updated.
-     * @return ResponseEntity - OK if the user was updated successfully, otherwise BAD_REQUEST.
+     * @return StandardUserDto - the updated user if the user was updated successfully, otherwise null.
      */
     public StandardUserDto update(StandardUserDto newUser, Long id) {
         if (userAccountRepository.findById(id).isEmpty()) {
@@ -96,7 +96,7 @@ public class UserService implements UserServiceInterface {
      *
      * @param newOrganizer an object that contains all the details of a standard user that will be updated.
      * @param id           The user ID that is being updated.
-     * @return ResponseEntity - OK if the user was updated successfully, otherwise BAD_REQUEST.
+     * @return OrganizerDto - the updated organizer if the user was updated successfully, otherwise null.
      */
     public OrganizerDto updateOrganizer(OrganizerDto newOrganizer, Long id) {
         if (userAccountRepository.findById(id).isEmpty()) {

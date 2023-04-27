@@ -42,8 +42,8 @@ public class EventService implements EventServiceInterface {
      * Create an event and adds it into database
      *
      * @param eventDto an object that contains all the details of an event
-     * @return ResponseEntity - If the event was successfully added in the database it return 200 OK, otherwise
-     * the registration will not succeed.
+     * @return EventDto - If the event was successfully added in the database it returns created event, otherwise
+     * the registration will not succeed and it returns null.
      */
     @Transactional
     public EventDto createEvent(EventDto eventDto) {
@@ -84,7 +84,7 @@ public class EventService implements EventServiceInterface {
      *
      * @param eventDto an object that contains all the details of an event that will be updated.
      * @param id The event ID that is being updated.
-     * @return ResponseEntity - OK if the event was updated successfully, otherwise BAD_REQUEST.
+     * @return EventDto - the updated event if the event was updated successfully, otherwise null.
      */
     @Transactional
     public EventDto updateEvent(EventDto eventDto, Long id) {
@@ -124,7 +124,7 @@ public class EventService implements EventServiceInterface {
      * Deletes an event from the database, if it exists.
      *
      * @param id the event ID that is being deleted.
-     * @return ResponseEntity - OK if the event was deleted successfully, otherwise BAD_REQUEST.
+     * @return boolean - true if the event was deleted successfully, otherwise false.
      */
     public boolean deleteEvent(Long id) {
         if (eventRepository.findById(id).isEmpty()) {

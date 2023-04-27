@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 /**
  * Handles the HTTP requests related to users, translates the JSON parameter
  * to object, and authenticates the request and transfer it to the service layer.
@@ -21,8 +22,11 @@ public class UserController {
     @Autowired
     private UserServiceInterface userService;
 
+
     /**
      * Handles the api call for deleting of a user and transfer it to the service layer.
+     *
+     * @return the response entity - OK if the user was deleted successfully, otherwise BAD_REQUEST.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
@@ -34,8 +38,11 @@ public class UserController {
         }
     }
 
+
     /**
-     * Handles the api call for deleting of an organizer with his events and transfer it to the service layer.
+     *  Handles the api call for deleting of an organizer with his events and transfer it to the service layer.
+     *
+     * @return the response entity - OK if the organizer was deleted successfully, otherwise BAD_REQUEST.
      */
     @DeleteMapping("/deleteOrganizer/{id}")
     public ResponseEntity<String> deleteOrganizer(@PathVariable Long id) {
@@ -50,6 +57,8 @@ public class UserController {
 
     /**
      * Handles the api call to update a user's data and transfer it to the service layer.
+     *
+     * @return the response entity - OK if the user was updated successfully, otherwise BAD_REQUEST.
      */
     @PutMapping("/{id}")
     public ResponseEntity<StandardUserDto> update(@RequestBody StandardUserDto newUser, @PathVariable Long id) {
@@ -61,8 +70,11 @@ public class UserController {
         }
     }
 
+
     /**
      * Handles the api call to update an organizer's data and transfer it to the service layer.
+     *
+     *  @return the response entity - OK if the organizer was updated successfully, otherwise BAD_REQUEST.
      */
     @PutMapping("updateOrganizer/{id}")
     public ResponseEntity<OrganizerDto> updateOrganizer(@RequestBody OrganizerDto newOrganizer, @PathVariable Long id) {
@@ -77,7 +89,9 @@ public class UserController {
 
 
     /**
-     * Handles the api call for returning all standard users and transfer it to the service layer.
+     * Gets all standard users.
+     *
+     * @return the all standard users
      */
     @GetMapping("/all")
     public ResponseEntity<List<StandardUserDto>> getAllStandardUsers() {
