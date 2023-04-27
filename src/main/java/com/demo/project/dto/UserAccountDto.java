@@ -3,15 +3,16 @@ package com.demo.project.dto;
 import com.demo.project.entity.UserAccountEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
+@ToString
+@EqualsAndHashCode
 public class UserAccountDto {
 
     @NotEmpty
@@ -35,4 +36,5 @@ public class UserAccountDto {
         this.password = userAccountEntity.getPassword();
         this.role = userAccountEntity.getRole().getName();
     }
+
 }

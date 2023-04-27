@@ -2,18 +2,17 @@ package com.demo.project.dto;
 
 import com.demo.project.entity.StandardUserEntity;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
+@ToString
+@EqualsAndHashCode(callSuper = true)
 public class StandardUserDto extends UserAccountDto {
-    @NotEmpty
-    private String dateOfBirth;
 
     @NotEmpty
     private String city;
@@ -27,4 +26,5 @@ public class StandardUserDto extends UserAccountDto {
         this.county = userEntity.getCounty();
 
     }
+
 }

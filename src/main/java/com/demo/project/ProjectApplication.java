@@ -20,7 +20,6 @@ public class ProjectApplication {
         UserInterfaceDB userInterfaceDB = new UserInterfaceDBImp();
         OperatiiDobanda operatiiDobanda2 = new OperatiiDobanda(userInterfaceDB);
         System.out.println("Dobanda cu risc: " + operatiiDobanda2.calculDobandaCuRisc());
-
     }
 
 
