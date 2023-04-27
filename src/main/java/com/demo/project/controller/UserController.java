@@ -43,7 +43,7 @@ public class UserController {
         if (deleted) {
             return new ResponseEntity<>("Organizer and his events deleted successfully!", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(("Organizer deletion failed - Order ID:" + id), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(("Organizer deletion failed"), HttpStatus.BAD_REQUEST);
         }
     }
 

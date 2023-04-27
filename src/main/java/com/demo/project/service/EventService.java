@@ -2,15 +2,18 @@ package com.demo.project.service;
 
 import com.demo.project.dto.EventDto;
 import com.demo.project.dto.TicketDto;
-import com.demo.project.entity.*;
+import com.demo.project.entity.EventEntity;
+import com.demo.project.entity.LocationEntity;
+import com.demo.project.entity.OrganizerEntity;
+import com.demo.project.entity.TicketEntity;
 import com.demo.project.repository.EventRepository;
 import com.demo.project.repository.LocationRepository;
 import com.demo.project.repository.OrganizerRepository;
 import com.demo.project.repository.TicketRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -20,7 +23,9 @@ import java.util.List;
  * This class handles all requests related to events.
  */
 @Component
-public class EventService {
+@AllArgsConstructor
+@NoArgsConstructor
+public class EventService implements EventServiceInterface {
     @Autowired
     private EventRepository eventRepository;
 
@@ -41,7 +46,7 @@ public class EventService {
      * the registration will not succeed.
      */
     @Transactional
-    public ResponseEntity<String> createEvent(EventDto eventDto) {
+    public EventDto createEvent(EventDto eventDto) {
         EventEntity eventEntity = new EventEntity();
         eventEntity.setName(eventDto.getName());
         eventEntity.setDescription(eventDto.getDescription());
@@ -70,7 +75,7 @@ public class EventService {
         }
         eventEntity.setTickets(ticketEntities);
         eventRepository.saveAndFlush(eventEntity);
-        return new ResponseEntity<>("Event created successfully!", HttpStatus.OK);
+        return new EventDto(eventEntity);
 
     }
 
@@ -82,9 +87,9 @@ public class EventService {
      * @return ResponseEntity - OK if the event was updated successfully, otherwise BAD_REQUEST.
      */
     @Transactional
-    public ResponseEntity<String> updateEvent(EventDto eventDto, Long id) {
+    public EventDto updateEvent(EventDto eventDto, Long id) {
         if (eventRepository.findById(id).isEmpty()) {
-            return new ResponseEntity<>("Event doesn't exists", HttpStatus.BAD_REQUEST);
+            return null;
         }
         EventEntity eventEntity = eventRepository.findById(id).get();
         eventEntity.setName(eventDto.getName());
@@ -111,7 +116,7 @@ public class EventService {
         }
         eventEntity.setTickets(ticketEntities);
         eventRepository.saveAndFlush(eventEntity);
-        return new ResponseEntity<>("Event updated successfully!", HttpStatus.OK);
+        return new EventDto(eventEntity);
 
     }
 
@@ -121,13 +126,13 @@ public class EventService {
      * @param id the event ID that is being deleted.
      * @return ResponseEntity - OK if the event was deleted successfully, otherwise BAD_REQUEST.
      */
-    public ResponseEntity<String> deleteEvent(Long id) {
+    public boolean deleteEvent(Long id) {
         if (eventRepository.findById(id).isEmpty()) {
-            return new ResponseEntity<>("Event doesn't exists", HttpStatus.BAD_REQUEST);
+            return false;
         }
 
         eventRepository.deleteById(id);
-        return new ResponseEntity<>("Event deleted successfully!", HttpStatus.OK);
+        return true;
     }
 
     /**
@@ -136,9 +141,9 @@ public class EventService {
      * @param city the city
      * @return the events in that city
      */
-    public ResponseEntity<List<EventEntity>> getEventsByCity(String city) {
+    public List<EventDto> getEventsByCity(String city) {
         List<EventEntity> eventEntities = eventRepository.findAllByLocation_City(city);
-        return new ResponseEntity<>(eventEntities, HttpStatus.OK);
+        return eventEntities.stream().map(EventDto::new).toList();
     }
 
 

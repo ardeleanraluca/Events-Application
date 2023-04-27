@@ -5,16 +5,18 @@ import com.demo.project.entity.LocationEntity;
 import com.demo.project.repository.EventRepository;
 import com.demo.project.repository.LocationRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 /**
  * This class handles all requests related to events'location.
  */
 @Component
-public class LocationService {
+@AllArgsConstructor
+@NoArgsConstructor
+public class LocationService implements LocationSeviceInterface {
     @Autowired
     private LocationRepository locationRepository;
 
@@ -29,10 +31,10 @@ public class LocationService {
      * the registration will not succeed.
      */
     @Transactional
-    public ResponseEntity<String> createLocation(LocationDto locationDto) {
+    public LocationDto createLocation(LocationDto locationDto) {
         if (locationRepository.findByNameAndCountyAndCity(
                 locationDto.getName(), locationDto.getCounty(), locationDto.getCity()) != null) {
-            return new ResponseEntity<>("Location with this name in this city already exists!", HttpStatus.CREATED);
+            return null;
         }
         LocationEntity locationEntity = new LocationEntity();
         locationEntity.setAddress(locationDto.getAddress());
@@ -40,8 +42,10 @@ public class LocationService {
         locationEntity.setName(locationDto.getName());
         locationEntity.setCity(locationDto.getCity());
         locationEntity.setCounty(locationDto.getCounty());
-        locationRepository.saveAndFlush(locationEntity);
-        return new ResponseEntity<>("Location created successfully!", HttpStatus.OK);
+
+       locationRepository.saveAndFlush(locationEntity);
+       System.out.println(locationEntity);
+        return new LocationDto(locationEntity);
     }
 
     /**
@@ -51,16 +55,16 @@ public class LocationService {
      * @return ResponseEntity - OK if the event was deleted successfully, otherwise BAD_REQUEST.
      */
     @Transactional
-    public ResponseEntity<String> deleteLocation(Long id) {
+    public boolean deleteLocation(Long id) {
         if (locationRepository.findById(id).isEmpty()) {
-            return new ResponseEntity<>("Location do not exists!", HttpStatus.BAD_REQUEST);
+            return false;
         }
 
         if (eventRepository.existsByLocation_Id(id)) {
-            return new ResponseEntity<>("You can not delete this location because exists events that take place here!", HttpStatus.OK);
+            return false;
         } else {
             locationRepository.deleteById(id);
         }
-        return new ResponseEntity<>("Location deleted successfully!", HttpStatus.OK);
+        return true;
     }
 }
