@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode
 public class EventDto {
 
+    private Long id;
+
     @NotEmpty
     private String name;
 
@@ -31,6 +33,7 @@ public class EventDto {
     private List<TicketDto> tickets;
 
     public EventDto(EventEntity eventEntity) {
+        this.id = eventEntity.getId();
         this.name = eventEntity.getName();
         this.description = eventEntity.getDescription();
         this.category = eventEntity.getCategory();
@@ -41,6 +44,5 @@ public class EventDto {
         this.tickets = eventEntity.getTickets().stream().map(TicketDto::new).collect(Collectors.toList());
 
     }
-
 
 }

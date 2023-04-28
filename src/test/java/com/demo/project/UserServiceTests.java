@@ -116,7 +116,7 @@ public class UserServiceTests {
                 .lastName("Ardelean")
                 .email("emailll")
                 .password("password")
-                .role("USER")
+                .role("ORGANIZER")
                 .events(new ArrayList<>())
                 .build();
         organizerDto.setEmail(userAccountEntity.getEmail());

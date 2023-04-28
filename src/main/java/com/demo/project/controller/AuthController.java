@@ -1,8 +1,12 @@
 package com.demo.project.controller;
 
-import com.demo.project.dto.*;
-import com.demo.project.service.AuthService;
+import com.demo.project.dto.OrganizerDto;
+import com.demo.project.dto.StandardUserDto;
+import com.demo.project.dto.UserAccountDto;
+import com.demo.project.dto.UserLoginDto;
+import com.demo.project.service.AuthServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
-    private AuthService authService;
+    private AuthServiceInterface authService;
 
     /**
      * Handles the api call for registration of a new user and transfer it to the service layer.
@@ -25,19 +29,29 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody StandardUserDto standardUserDto) {
 
-        return authService.register(standardUserDto);
+        StandardUserDto registered = authService.register(standardUserDto);
+        if (registered==null) {
+            return new ResponseEntity<>("User registered success!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("An account is already registered with this email!", HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
      * Handles the api call for registration of a new organizer and transfer it to the service layer
      * if the user which try to make this request is an admin
-     * else it return a bad request
+     * else it returns a bad request
      */
     @PostMapping("/registerOrganizer")
     public ResponseEntity<String> registerOrganizer(@RequestBody OrganizerDto organizerDto) {
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN")))
-            return authService.registerOrganizer(organizerDto);
+        OrganizerDto registered = authService.registerOrganizer(organizerDto);
+        if (registered==null) {
+            return new ResponseEntity<>("Organizer registered success!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("An account is already registered with this email!", HttpStatus.BAD_REQUEST);
+        }
 //        return new ResponseEntity<>("Organizer can not be registered because you are not an admin!", HttpStatus.FORBIDDEN);
     }
 
@@ -47,7 +61,7 @@ public class AuthController {
      */
     @PostMapping("/login")
     public ResponseEntity<UserAccountDto> login(@RequestBody UserLoginDto userLoginDto) {
-        return authService.login(userLoginDto);
+        return new ResponseEntity<>(authService.login(userLoginDto), HttpStatus.OK);
     }
 
 }

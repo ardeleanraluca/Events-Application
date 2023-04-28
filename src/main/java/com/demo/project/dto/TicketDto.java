@@ -1,16 +1,14 @@
 package com.demo.project.dto;
 
 import com.demo.project.entity.TicketEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class TicketDto {
 
     private Double price;

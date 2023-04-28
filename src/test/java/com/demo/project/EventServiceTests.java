@@ -115,6 +115,7 @@ public class EventServiceTests {
                 .build();
 
         EventDto eventDto = EventDto.builder()
+                .id(3L)
                 .name("Event")
                 .description("description")
                 .category("Movie")
@@ -124,6 +125,7 @@ public class EventServiceTests {
                 .hour("20:00")
                 .organizerId(organizerEntity.getId())
                 .build();
+
 
         when(eventRepository.findById(eventEntity.getId())).thenReturn(Optional.of(eventEntity));
 
@@ -206,6 +208,7 @@ public class EventServiceTests {
                 .build();
 
         EventDto eventDto = EventDto.builder()
+                .id(3L)
                 .name("Event")
                 .description("description")
                 .category("Movie")

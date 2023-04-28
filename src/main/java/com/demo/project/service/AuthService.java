@@ -9,12 +9,11 @@ import com.demo.project.repository.OrganizerRepository;
 import com.demo.project.repository.RoleRepository;
 import com.demo.project.repository.StandardUserRepository;
 import com.demo.project.repository.UserAccountRepository;
-import com.demo.project.security.JWTGenerator;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,12 +21,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 
 /**
  * This class handles all the requests related to authentication and registration in application.
  */
 @Component
-public class AuthService {
+@AllArgsConstructor
+@NoArgsConstructor
+public class AuthService implements AuthServiceInterface {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -39,9 +42,8 @@ public class AuthService {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private JWTGenerator jwtGenerator;
-
+//    @Autowired
+//    private JWTGenerator jwtGenerator;
     @Autowired
     private OrganizerRepository organizerRepository;
 
@@ -53,13 +55,13 @@ public class AuthService {
      * Registers a standard user and adds it into database.
      *
      * @param standardUserDto an object that contains all the details of a standard user
-     * @return ResponseEntity - If the user was successfully added in the database it return 200 OK, otherwise
-     * the registration will not succeed.
+     * @return boolean - If the user was successfully added in the database it true, otherwise
+     * the registration will not succeed and it returns false.
      */
     @Transactional
-    public ResponseEntity<String> register(StandardUserDto standardUserDto) {
+    public StandardUserDto register(StandardUserDto standardUserDto) {
         if (userAccountRepository.existsByEmail(standardUserDto.getEmail())) {
-            return new ResponseEntity<>("An account is already registered with this email!", HttpStatus.BAD_REQUEST);
+            return null;
         }
 
         UserAccountEntity userAcc = new UserAccountEntity();
@@ -75,13 +77,14 @@ public class AuthService {
         user.setUserAccountEntity(userAcc);
         user.setCounty(standardUserDto.getCounty());
         user.setCity(standardUserDto.getCity());
+        user.setBoughtTickets(new ArrayList<>());
         standardUserRepository.saveAndFlush(user);
 
         String message = "Welcome " + standardUserDto.getFirstName() + " " + standardUserDto.getLastName();
         EmailEvent emailEvent = new EmailEvent(this, standardUserDto.getEmail(), "Registration", message);
         applicationEventPublisher.publishEvent(emailEvent);
 
-        return new ResponseEntity<>("User registered success!", HttpStatus.OK);
+        return new StandardUserDto(user);
     }
 
 
@@ -89,13 +92,13 @@ public class AuthService {
      * Registers a organizer and adds it into database.
      *
      * @param organizerDto an object that contains all the details of an organizer
-     * @return ResponseEntity - If the organizer was successfully added in the database it return 200 OK, otherwise
-     * the registration will not succeed.
+     * @return boolean - If the organizer was successfully added in the database it returns true, otherwise
+     * the registration will not succeed and it returns false;
      */
     @Transactional
-    public ResponseEntity<String> registerOrganizer(OrganizerDto organizerDto) {
+    public OrganizerDto registerOrganizer(OrganizerDto organizerDto) {
         if (userAccountRepository.existsByEmail(organizerDto.getEmail())) {
-            return new ResponseEntity<>("An account is already registered with this email!", HttpStatus.BAD_REQUEST);
+            return null;
         }
 
         UserAccountEntity userAcc = new UserAccountEntity();
@@ -110,13 +113,14 @@ public class AuthService {
 
         OrganizerEntity organizer = new OrganizerEntity();
         organizer.setUserAccountEntity(userAcc);
+        organizer.setEvents(new ArrayList<>());
         organizerRepository.saveAndFlush(organizer);
 
         String message = "Welcome " + organizerDto.getFirstName() + " " + organizerDto.getLastName();
         EmailEvent emailEvent = new EmailEvent(this, organizerDto.getEmail(), "Registration", message);
         applicationEventPublisher.publishEvent(emailEvent);
 
-        return new ResponseEntity<>("Organizer registered success!", HttpStatus.OK);
+        return new OrganizerDto(organizer);
     }
 
 
@@ -125,27 +129,27 @@ public class AuthService {
      * Otherwise, if the principal is not valid, it will throw an AuthenticationException and that means the user can not log in application because the email or password are wrong.
      *
      * @param userLoginDto email and password
-     * @return AuthResponse - access token and token type if the user login successfully, otherwise it returns 401 Unauthorized.
+     * @return UserAccountDto - user's details if the user login successfully, otherwise it returns 401 Unauthorized.
      */
-    public ResponseEntity<UserAccountDto> login(UserLoginDto userLoginDto) {
+    public UserAccountDto login(UserLoginDto userLoginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         userLoginDto.getEmail().toLowerCase(),
                         userLoginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println(authentication.getAuthorities());
-        String token = jwtGenerator.generateToken(authentication);
+        System.out.println(authentication.getDetails());
+//        String token = jwtGenerator.generateToken(authentication);
 
         UserAccountEntity userAccount = userAccountRepository.findByEmail(userLoginDto.getEmail().toLowerCase()).get();
 
         String roleType = String.valueOf(authentication.getAuthorities().stream().toList().get(0));
         if (roleType.equals("ORGANIZER")) {
-            return new ResponseEntity<>(new OrganizerDto(organizerRepository.findByUserAccountEntity(userAccount)), HttpStatus.OK);
+            return new OrganizerDto(organizerRepository.findByUserAccountEntity(userAccount));
 
         } else if (roleType.equals("USER")) {
-            return new ResponseEntity<>(new StandardUserDto(standardUserRepository.findByUserAccountEntity(userAccount)), HttpStatus.OK);
+            return new StandardUserDto(standardUserRepository.findByUserAccountEntity(userAccount));
         } else {
-            return new ResponseEntity<>(new UserAccountDto(userAccount), HttpStatus.OK);
+            return new UserAccountDto(userAccount);
         }
     }
 }
