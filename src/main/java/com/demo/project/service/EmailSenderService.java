@@ -3,6 +3,7 @@ package com.demo.project.service;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -13,6 +14,7 @@ import java.util.Properties;
  * This class is a service that deals with sending emails to users.
  */
 @Service
+@Setter
 public class EmailSenderService {
     private String username;
     private String password;
@@ -39,7 +41,7 @@ public class EmailSenderService {
      * @param subject the email's subject.
      * @param body    the message that is sent.
      */
-    public void sendEmail(String toEmail,
+    public boolean sendEmail(String toEmail,
                           String subject,
                           String body
     ) {
@@ -60,10 +62,12 @@ public class EmailSenderService {
             message.setText(body);
             Transport.send(message);
             System.out.println("Sent message successfully....");
+            return true;
         } catch (MessagingException | UnsupportedEncodingException mex) {
             mex.printStackTrace();
         }
 
+        return false;
     }
 
 }
