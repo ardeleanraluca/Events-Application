@@ -78,6 +78,8 @@ public class AuthServiceTests {
 
         when(passwordEncoder.encode(standardUserDto.getPassword())).thenReturn(standardUserDto.getPassword());
         when(roleRepository.findByName("USER")).thenReturn(Optional.of(role));
+        when(userAccountRepository.saveAndFlush(userAccountEntity)).thenReturn(userAccountEntity);
+        when(standardUserRepository.saveAndFlush(standardUserEntity)).thenReturn(standardUserEntity);
 
         StandardUserDto result = authServiceInterface.register(standardUserDto);
         assertEquals(standardUserDto,result);
@@ -115,6 +117,8 @@ public class AuthServiceTests {
 
         when(passwordEncoder.encode(organizerDto.getPassword())).thenReturn(organizerDto.getPassword());
         when(roleRepository.findByName("ORGANIZER")).thenReturn(Optional.of(role));
+        when(userAccountRepository.saveAndFlush(userAccountEntity)).thenReturn(userAccountEntity);
+        when(organizerRepository.saveAndFlush(organizerEntity)).thenReturn(organizerEntity);
 
         OrganizerDto result = authServiceInterface.registerOrganizer(organizerDto);
         assertEquals(organizerDto,result);

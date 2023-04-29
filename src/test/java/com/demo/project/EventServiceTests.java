@@ -76,8 +76,8 @@ public class EventServiceTests {
 
 
         when(organizerRepository.findById(eventDto.getOrganizerId())).thenReturn(Optional.of(organizerEntity));
-
         when(locationRepository.findById(eventDto.getLocationId())).thenReturn(Optional.ofNullable(locationEntity));
+        when(eventRepository.saveAndFlush(eventEntity)).thenReturn(eventEntity);
 
         EventDto result = eventServiceInterface.createEvent(eventDto);
 
@@ -128,10 +128,9 @@ public class EventServiceTests {
 
 
         when(eventRepository.findById(eventEntity.getId())).thenReturn(Optional.of(eventEntity));
-
         when(organizerRepository.findById(eventDto.getOrganizerId())).thenReturn(Optional.of(organizerEntity));
-
         when(locationRepository.findById(eventDto.getLocationId())).thenReturn(Optional.of(locationEntity));
+        when(eventRepository.saveAndFlush(eventEntity)).thenReturn(eventEntity);
 
         EventDto result = eventServiceInterface.updateEvent(eventDto, eventEntity.getId());
 

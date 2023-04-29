@@ -48,6 +48,7 @@ public class LocationServiceTests {
                 .build();
 
         when(locationRepository.findByNameAndCountyAndCity(locationDto.getName(), locationDto.getCounty(), locationDto.getCity())).thenReturn(null);
+        when(locationRepository.saveAndFlush(locationEntity)).thenReturn(locationEntity);
 
         LocationDto result = locationSeviceInterface.createLocation(locationDto);
 

@@ -31,9 +31,10 @@ public class AuthController {
 
         StandardUserDto registered = authService.register(standardUserDto);
         if (registered==null) {
-            return new ResponseEntity<>("User registered success!", HttpStatus.OK);
-        } else {
             return new ResponseEntity<>("An account is already registered with this email!", HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>("User registered success!", HttpStatus.OK);
+
         }
     }
 

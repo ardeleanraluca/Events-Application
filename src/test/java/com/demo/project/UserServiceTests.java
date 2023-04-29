@@ -91,6 +91,8 @@ public class UserServiceTests {
 
         standardUserDto.setEmail(userAccountEntity.getEmail());
         when(passwordEncoder.encode(standardUserDto.getPassword())).thenReturn(standardUserDto.getPassword());
+        when(userAccountRepository.saveAndFlush(userAccountEntity)).thenReturn(userAccountEntity);
+        when(standardUserRepository.saveAndFlush(standardUserEntity)).thenReturn(standardUserEntity);
 
         StandardUserDto result = userServiceInterface.update(standardUserDto, userAccountEntity.getId());
 
@@ -104,7 +106,7 @@ public class UserServiceTests {
     @Test
     void testUpdateOrganizer() {
         UserService userServiceInterface = new UserService(userAccountRepository, standardUserRepository, passwordEncoder, organizerRepository);
-        RoleEntity role = new RoleEntity(1, "USER");
+        RoleEntity role = new RoleEntity(1, "ORGANIZER");
         UserAccountEntity userAccountEntity = new UserAccountEntity(1L, "Raluca", "Ardelean", "email", "password", role);
         OrganizerEntity organizerEntity = new OrganizerEntity(1L, userAccountEntity, new ArrayList<>());
 
@@ -122,6 +124,8 @@ public class UserServiceTests {
         organizerDto.setEmail(userAccountEntity.getEmail());
 
         when(passwordEncoder.encode(organizerDto.getPassword())).thenReturn(organizerDto.getPassword());
+        when(userAccountRepository.saveAndFlush(userAccountEntity)).thenReturn(userAccountEntity);
+        when(organizerRepository.saveAndFlush(organizerEntity)).thenReturn(organizerEntity);
 
         OrganizerDto result = userServiceInterface.updateOrganizer(organizerDto, userAccountEntity.getId());
 
