@@ -43,8 +43,7 @@ public class LocationService implements LocationSeviceInterface {
         locationEntity.setCity(locationDto.getCity());
         locationEntity.setCounty(locationDto.getCounty());
 
-       locationRepository.saveAndFlush(locationEntity);
-       System.out.println(locationEntity);
+        locationRepository.saveAndFlush(locationEntity);
         return new LocationDto(locationEntity);
     }
 

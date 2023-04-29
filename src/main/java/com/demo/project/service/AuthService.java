@@ -82,7 +82,7 @@ public class AuthService implements AuthServiceInterface {
 
         String message = "Welcome " + standardUserDto.getFirstName() + " " + standardUserDto.getLastName();
         EmailEvent emailEvent = new EmailEvent(this, standardUserDto.getEmail(), "Registration", message);
-        applicationEventPublisher.publishEvent(emailEvent);
+//        applicationEventPublisher.publishEvent(emailEvent);
 
         return new StandardUserDto(user);
     }

@@ -44,7 +44,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/StandardUserDto"
                 }
               }
             }
@@ -114,7 +114,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/OrganizerDto"
                 }
               }
             }
@@ -155,7 +155,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/EventDto"
                 }
               }
             }
@@ -214,7 +214,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/LocationDto"
                 }
               }
             }
@@ -244,7 +244,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/EventDto"
                 }
               }
             }
@@ -334,7 +334,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/AuthResponse"
+                  "$ref": "#/components/schemas/UserAccountDto"
                 }
               }
             }
@@ -356,7 +356,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/StandardUserEntity"
+                    "$ref": "#/components/schemas/StandardUserDto"
                   }
                 }
               }
@@ -389,7 +389,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/EventEntity"
+                    "$ref": "#/components/schemas/EventDto"
                   }
                 }
               }
@@ -467,11 +467,11 @@
         "required": [
           "city",
           "county",
-          "dateOfBirth",
           "email",
           "firstName",
           "lastName",
-          "password"
+          "password",
+          "role"
         ],
         "type": "object",
         "properties": {
@@ -487,7 +487,7 @@
           "password": {
             "type": "string"
           },
-          "dateOfBirth": {
+          "role": {
             "type": "string"
           },
           "city": {
@@ -506,6 +506,10 @@
         ],
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "name": {
             "type": "string"
           },
@@ -529,9 +533,6 @@
             "type": "integer",
             "format": "int64"
           },
-          "moreCategoryTickets": {
-            "type": "boolean"
-          },
           "tickets": {
             "type": "array",
             "items": {
@@ -545,7 +546,8 @@
           "email",
           "firstName",
           "lastName",
-          "password"
+          "password",
+          "role"
         ],
         "type": "object",
         "properties": {
@@ -561,6 +563,9 @@
           "password": {
             "type": "string"
           },
+          "role": {
+            "type": "string"
+          },
           "events": {
             "type": "array",
             "items": {
@@ -572,9 +577,6 @@
       "TicketDto": {
         "type": "object",
         "properties": {
-          "category": {
-            "type": "string"
-          },
           "price": {
             "type": "number",
             "format": "double"
@@ -628,185 +630,20 @@
           }
         }
       },
-      "AuthResponse": {
+      "UserAccountDto": {
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "password",
+          "role"
+        ],
         "type": "object",
         "properties": {
-          "accessToken": {
+          "firstName": {
             "type": "string"
           },
-          "tokenType": {
-            "type": "string"
-          }
-        }
-      },
-      "BoughtTicketEntity": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "typedTicket": {
-            "$ref": "#/components/schemas/TicketEntity"
-          },
-          "user": {
-            "$ref": "#/components/schemas/StandardUserEntity"
-          },
-          "place": {
-            "type": "integer",
-            "format": "int32"
-          }
-        }
-      },
-      "EventEntity": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "category": {
-            "type": "string"
-          },
-          "date": {
-            "type": "string"
-          },
-          "hour": {
-            "type": "string"
-          },
-          "organizer": {
-            "$ref": "#/components/schemas/OrganizerEntity"
-          },
-          "location": {
-            "$ref": "#/components/schemas/LocationEntity"
-          },
-          "tickets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TicketEntity"
-            }
-          }
-        }
-      },
-      "LocationEntity": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "noSeats": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "county": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "address": {
-            "type": "string"
-          }
-        }
-      },
-      "OrganizerEntity": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "userAccountEntity": {
-            "$ref": "#/components/schemas/UserAccountEntity"
-          },
-          "events": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EventEntity"
-            }
-          }
-        }
-      },
-      "RoleEntity": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "name": {
-            "type": "string"
-          }
-        }
-      },
-      "StandardUserEntity": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "userAccountEntity": {
-            "$ref": "#/components/schemas/UserAccountEntity"
-          },
-          "city": {
-            "type": "string"
-          },
-          "county": {
-            "type": "string"
-          },
-          "dateOfBirth": {
-            "type": "string"
-          },
-          "boughtTickets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BoughtTicketEntity"
-            }
-          }
-        }
-      },
-      "TicketEntity": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "category": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number",
-            "format": "double"
-          },
-          "discount": {
-            "type": "number",
-            "format": "double"
-          },
-          "event": {
-            "$ref": "#/components/schemas/EventEntity"
-          }
-        }
-      },
-      "UserAccountEntity": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
+          "lastName": {
             "type": "string"
           },
           "email": {
@@ -816,7 +653,7 @@
             "type": "string"
           },
           "role": {
-            "$ref": "#/components/schemas/RoleEntity"
+            "type": "string"
           }
         }
       }
