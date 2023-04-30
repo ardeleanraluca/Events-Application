@@ -2,6 +2,8 @@ package com.demo.project;
 
 import com.demo.project.dto.OrganizerDto;
 import com.demo.project.dto.StandardUserDto;
+import com.demo.project.dto.UserAccountDto;
+import com.demo.project.dto.UserLoginDto;
 import com.demo.project.entity.OrganizerEntity;
 import com.demo.project.entity.RoleEntity;
 import com.demo.project.entity.StandardUserEntity;
@@ -17,12 +19,17 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -48,8 +55,51 @@ public class AuthServiceTests {
 
 
     @Test
-    public void testRegisterUser(){
-        AuthServiceInterface authServiceInterface = new AuthService(authenticationManager,userAccountRepository,standardUserRepository,roleRepository,passwordEncoder,organizerRepository,applicationEventPublisher);
+    public void testLogin() {
+        AuthServiceInterface authServiceInterface = new AuthService(authenticationManager, userAccountRepository, standardUserRepository, roleRepository, passwordEncoder, organizerRepository, applicationEventPublisher);
+
+        UserLoginDto userLoginDto = new UserLoginDto("email", "password");
+
+        RoleEntity role = new RoleEntity(1, "USER");
+        UserAccountEntity userAccountEntity = new UserAccountEntity(1L, "Raluca", "Ardelean", "email", "password", role);
+
+        StandardUserEntity standardUserEntity = StandardUserEntity.builder()
+                .userAccountEntity(userAccountEntity)
+                .city("Oradea")
+                .county("Bihor")
+                .boughtTickets(new ArrayList<>())
+                .build();
+
+        StandardUserDto standardUserDto = StandardUserDto.builder()
+                .firstName("Raluca")
+                .lastName("Ardelean")
+                .email("email")
+                .password("password")
+                .role("USER")
+                .city("Oradea")
+                .county("Bihor")
+                .build();
+
+
+        Set<SimpleGrantedAuthority> authority = Collections.singleton(new SimpleGrantedAuthority(role.getName()));
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userAccountEntity.getEmail(), userAccountEntity.getPassword(), authority);
+
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenReturn(auth);
+
+        when(userAccountRepository.findByEmail(userLoginDto.getEmail().toLowerCase())).thenReturn(Optional.of(userAccountEntity));
+//        when(organizerRepository.findByUserAccountEntity(userAccountEntity)).thenReturn(null);
+        when(standardUserRepository.findByUserAccountEntity(userAccountEntity)).thenReturn(standardUserEntity);
+
+        UserAccountDto result = authServiceInterface.login(userLoginDto);
+
+        assertEquals(result, standardUserDto);
+    }
+
+
+    @Test
+    public void testRegisterUser() {
+        AuthServiceInterface authServiceInterface = new AuthService(authenticationManager, userAccountRepository, standardUserRepository, roleRepository, passwordEncoder, organizerRepository, applicationEventPublisher);
         RoleEntity role = new RoleEntity(1, "USER");
         UserAccountEntity userAccountEntity = UserAccountEntity.builder()
                 .firstName("Raluca")
@@ -82,7 +132,7 @@ public class AuthServiceTests {
         when(standardUserRepository.saveAndFlush(standardUserEntity)).thenReturn(standardUserEntity);
 
         StandardUserDto result = authServiceInterface.register(standardUserDto);
-        assertEquals(standardUserDto,result);
+        assertEquals(standardUserDto, result);
         verify(userAccountRepository).saveAndFlush(userAccountEntity);
         verify(standardUserRepository).saveAndFlush(standardUserEntity);
 
@@ -90,8 +140,8 @@ public class AuthServiceTests {
 
 
     @Test
-    public void testRegisterOrganizer(){
-        AuthServiceInterface authServiceInterface = new AuthService(authenticationManager,userAccountRepository,standardUserRepository,roleRepository,passwordEncoder,organizerRepository,applicationEventPublisher);
+    public void testRegisterOrganizer() {
+        AuthServiceInterface authServiceInterface = new AuthService(authenticationManager, userAccountRepository, standardUserRepository, roleRepository, passwordEncoder, organizerRepository, applicationEventPublisher);
         RoleEntity role = new RoleEntity(1, "ORGANIZER");
         UserAccountEntity userAccountEntity = UserAccountEntity.builder()
                 .firstName("Raluca")
@@ -121,7 +171,7 @@ public class AuthServiceTests {
         when(organizerRepository.saveAndFlush(organizerEntity)).thenReturn(organizerEntity);
 
         OrganizerDto result = authServiceInterface.registerOrganizer(organizerDto);
-        assertEquals(organizerDto,result);
+        assertEquals(organizerDto, result);
         verify(userAccountRepository).saveAndFlush(userAccountEntity);
         verify(organizerRepository).saveAndFlush(organizerEntity);
 

@@ -137,7 +137,7 @@ public class AuthService implements AuthServiceInterface {
                         userLoginDto.getEmail().toLowerCase(),
                         userLoginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println(authentication.getDetails());
+        System.out.println(authentication);
 //        String token = jwtGenerator.generateToken(authentication);
 
         UserAccountEntity userAccount = userAccountRepository.findByEmail(userLoginDto.getEmail().toLowerCase()).get();
