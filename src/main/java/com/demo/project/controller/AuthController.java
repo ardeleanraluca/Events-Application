@@ -30,7 +30,7 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody StandardUserDto standardUserDto) {
 
         StandardUserDto registered = authService.register(standardUserDto);
-        if (registered==null) {
+        if (registered == null) {
             return new ResponseEntity<>("An account is already registered with this email!", HttpStatus.BAD_REQUEST);
         } else {
             return new ResponseEntity<>("User registered success!", HttpStatus.OK);
@@ -47,10 +47,11 @@ public class AuthController {
 //        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN")))
         OrganizerDto registered = authService.registerOrganizer(organizerDto);
-        if (registered==null) {
-            return new ResponseEntity<>("Organizer registered success!", HttpStatus.OK);
-        } else {
+        if (registered == null) {
             return new ResponseEntity<>("An account is already registered with this email!", HttpStatus.BAD_REQUEST);
+
+        } else {
+            return new ResponseEntity<>("Organizer registered success!", HttpStatus.OK);
         }
 //        return new ResponseEntity<>("Organizer can not be registered because you are not an admin!", HttpStatus.FORBIDDEN);
     }

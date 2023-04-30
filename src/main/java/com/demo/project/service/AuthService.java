@@ -118,7 +118,7 @@ public class AuthService implements AuthServiceInterface {
 
         String message = "Welcome " + organizerDto.getFirstName() + " " + organizerDto.getLastName();
         EmailEvent emailEvent = new EmailEvent(this, organizerDto.getEmail(), "Registration", message);
-        applicationEventPublisher.publishEvent(emailEvent);
+//        applicationEventPublisher.publishEvent(emailEvent);
 
         return new OrganizerDto(organizer);
     }
