@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * This class handles all requests related to events'location.
  */
@@ -65,5 +67,11 @@ public class LocationService implements LocationSeviceInterface {
             locationRepository.deleteById(id);
         }
         return true;
+    }
+
+    @Override
+    public List<LocationDto> getLocationsByCountyAndCity(String county, String city) {
+        List<LocationEntity> locationEntities = locationRepository.findAllByCountyAndCity(county,city);
+        return locationEntities.stream().map(LocationDto::new).toList();
     }
 }

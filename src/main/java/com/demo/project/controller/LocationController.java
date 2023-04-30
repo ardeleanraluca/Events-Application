@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * Handles the HTTP requests related to events'location, translates the JSON parameter
@@ -28,7 +30,7 @@ public class LocationController {
     public ResponseEntity<LocationDto> createLocation(@RequestBody LocationDto locationDto) {
         LocationDto createdLocation = locationService.createLocation(locationDto);
         if(createdLocation==null){
-            return new ResponseEntity<>(createdLocation, HttpStatus.CREATED);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }else{
             return new ResponseEntity<>(createdLocation, HttpStatus.OK);
         }
@@ -49,4 +51,12 @@ public class LocationController {
 
         }
     }
+
+    @GetMapping("")
+    public ResponseEntity<List<LocationDto>> getLocationsByCountyAndCity(@RequestParam("county") String county, @RequestParam("city") String city) {
+        List<LocationDto> locations = locationService.getLocationsByCountyAndCity(county,city);
+        return new ResponseEntity<>(locations, HttpStatus.OK);
+    }
+
+
 }
