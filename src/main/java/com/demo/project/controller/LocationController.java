@@ -28,7 +28,7 @@ public class LocationController {
     public ResponseEntity<LocationDto> createLocation(@RequestBody LocationDto locationDto) {
         LocationDto createdLocation = locationService.createLocation(locationDto);
         if(createdLocation==null){
-            return new ResponseEntity<>(createdLocation, HttpStatus.CREATED);
+            return new ResponseEntity<>(createdLocation, HttpStatus.BAD_REQUEST);
         }else{
             return new ResponseEntity<>(createdLocation, HttpStatus.OK);
         }
