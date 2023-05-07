@@ -14,6 +14,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class StandardUserDto extends UserAccountDto {
 
+    private Long id;
+
     @NotEmpty
     private String city;
 
@@ -22,6 +24,7 @@ public class StandardUserDto extends UserAccountDto {
 
     public StandardUserDto(StandardUserEntity userEntity) {
         super(userEntity.getUserAccountEntity());
+        this.id = userEntity.getId();
         this.city = userEntity.getCity();
         this.county = userEntity.getCounty();
 

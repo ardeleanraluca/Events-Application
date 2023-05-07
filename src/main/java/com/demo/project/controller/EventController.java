@@ -74,4 +74,10 @@ public class EventController {
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
+    @GetMapping("/allCategories")
+    public ResponseEntity<List<String>> getCategories() {
+        List<String> categories = eventService.getAllCategories();
+        return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+
 }

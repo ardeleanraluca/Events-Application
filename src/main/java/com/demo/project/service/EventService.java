@@ -83,7 +83,7 @@ public class EventService implements EventServiceInterface {
      * Update an event's data in database, if it exists.
      *
      * @param eventDto an object that contains all the details of an event that will be updated.
-     * @param id The event ID that is being updated.
+     * @param id       The event ID that is being updated.
      * @return EventDto - the updated event if the event was updated successfully, otherwise null.
      */
     @Transactional
@@ -144,6 +144,10 @@ public class EventService implements EventServiceInterface {
     public List<EventDto> getEventsByCity(String city) {
         List<EventEntity> eventEntities = eventRepository.findAllByLocation_City(city);
         return eventEntities.stream().map(EventDto::new).toList();
+    }
+
+    public List<String> getAllCategories() {
+        return eventRepository.findAll().stream().map(EventEntity::getCategory).distinct().sorted().toList();
     }
 
 

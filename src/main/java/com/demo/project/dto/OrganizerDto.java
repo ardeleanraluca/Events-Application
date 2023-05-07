@@ -14,9 +14,11 @@ import java.util.List;
 @SuperBuilder
 public class OrganizerDto extends UserAccountDto {
     private List<EventDto> events;
+    private Long id;
 
     public OrganizerDto(OrganizerEntity organizerEntity) {
         super(organizerEntity.getUserAccountEntity());
+        this.id = organizerEntity.getId();
         this.events = organizerEntity.getEvents().stream().map(EventDto::new).toList();
     }
 }

@@ -34,7 +34,7 @@ The next most general functionality is aimed at users who are **not guests**, na
 - can generate certain reports.
 
 ## Database diagram
-![Database Diagram](http://www.plantuml.com/plantuml/svg/hPJ1Rjiy3CVlVWgs7_2X1bOK6z2XC0oZfrrstTsGRSOMOek6HAVnbhpxB3VIuaJ5ac2-cHH__9CYzMfOQ1wwDhghS2KLGgzb9_IOht5ysCQG5bbQKaiw-QzuUVdwUVhzVt9bwTDipRRfKv7vu1LfbBKw1Bj0CN-dWJw8HT6YpOMA9O-mXJI5Xn-VuAsHZ35aMHJTSOCTGjyAgIAc7fYW86Rge98QIvQa8hEMgXTQTD1EN1vx1DBSK1IzfoXeg1lEMPPhP1F3hmXWKQ-iuWGAMKl5asjHZQMzHrRvqR59whVlMNPwUZ2emyTi2IKcO5Fi3xfmW-fQFOresmk4aAw5aZy_L5CAnfhqcC16wB8H-k7BytDiFTNa2LZHb5hsjjtdpeO6VMvLeZi5xTsDj5GAoxgW-036wgT1yHYmov1LL9L6Om8QAJSesFY4xcfy_wwy7b7Eoa9TTsXDBTvMjoFSDCYumQMkluo1D7Cb2LGqJ4cdD5XA8qaTSfOOS7c9yo8Scd6bKDkVIUUyAbYZZe_65ZiXsuj6pUOJnhoHhfQUXSH_Txj-ziAJ6jwpd5Pv8JKtvtkoVBDW_dQxnyVT3fpj_4lWVlbU9RAw3wBsCmdc7W24KTRf67PwbYazm-zoY66VgmiOVzOjmF1E1mgSThs1nU2TW0vcXmdqqUa9IVKOw_IGG3u7iOFyONEjyvZX3zvUpokgQkZQtm00)
+![Database Diagram](http://www.plantuml.com/plantuml/svg/hPJ1Rjim38RlVWgs0uOQM55iG8V2C8oUTjbrzq2sM5keB0OItTPRykwJLTkBNNLBWlaM_jJ7dnIZUyV2SjVgv4BYWp88MwjQOVlD8_PNBodaPP5NfCbc7ygxkw-V_S-FNYhocn0jNlARifWFFv15LPlny7HGX6zzS3x4ejGur4B3YdjuWJo7gn-VuBbHZ2aKHP9SS8EjDwU5CWdJ5fYW96PgGIgB5IioYNjKPYkiQ45xBlTR1BBSK9AybYYfgnlUiAeUaLqAlnA0HRzAfXcKgbQ6lRJePg2zdfIRWpHlzTltebXdTmvjB6q_Ei4dDASwQ8JMHvGcMmkZVg9z9xSIZ3NPFeCdOQj6sAiljxVfe4YlHABeAgksmu3VYWrrzctKY7ODsazteAaI0-k8vYEOmJzrXlj8NCMYGagBpaKyqiQXO3SLdAzcdj-9roEguEnljsv9urbzpuIpLZSissQL89KBVZEGr7cqXs6bd28paYkCIBEHiE1ZowVP2LFmRZBm6jPequFbn5OeVSn2XNh2kMUoSgaiBFw_EunlM7mVmxel7ni8tsvtVRtRmIAs-3AuN3uqcPANKTG-a20q2H173UB424kmoXmPyryonWYlphyPV_ur4SOiJg1OzZWRM6pM2ZI69qniZgEVcDKP4yG94gitGePDVNUuWtZ8c1FFx-SUZUnQ_Hi0)
 
 ## Architecture
 The Spring Boot follows a **layered architecture** in which each layer communicates to other layers(Above or below in hierarchical order).
@@ -117,14 +117,14 @@ The application that is an observer is able to listen through the annotation @Ev
 ### **Endpoints**
 Controller classes handle the HTTP requests, translates the JSON parameter to object, authenticates the request and transfer it to the service layer.
 
-#### AuthController and AuthService
+#### AuthController
 AuthController and AuthService handle all the requests related to authentication and registration in application.
 - ```public ResponseEntity<String> register(@RequestBody StandardUserDto standardUserDto)``` - Registers a standard user and adds it to the database, while creating an account which is also saved to the database.
 - ```public ResponseEntity<String> registerOrganizer(OrganizerDto organizerDto)``` - An organizer is registered in application by admin and added to the database, while creating an account which is also saved to the database.
-- ```public ResponseEntity<AuthResponse> login(UserLoginDto userLoginDto)``` - This endpoint try to authenticate a user in application. If it succeed a token is generated.
+- ```public ResponseEntity<UserAccountDto> login(UserLoginDto userLoginDto)``` - This endpoint try to authenticate a user in application. If it succeed are returned user's details.
 
 
-#### UserController and UserService
+#### UserController
 UserController and UserService handle all the requests related to users, whatever if they are standard users or organizers.
 - ```public ResponseEntity<String> update(StandardUserDto newUser, Long id)``` - Updates a user's data in database, if it exists. This method can update both the user account data and the personal data of a standard user.
 - ```public ResponseEntity<String> updateOrganizer(OrganizerDto newOrganizer, Long id)``` - Updates an organizer's data in database, if it exists. This method can update both the user account data and the personal data of an organizer.
@@ -132,14 +132,14 @@ UserController and UserService handle all the requests related to users, whateve
 - ``` public ResponseEntity<String> deleteOrganizer(Long id)``` - Deletes an organizer from the database, if it exists. This action also involves the deletion of the associated user account and only an admin is able to do this.
 - ```public ResponseEntity<List<StandardUserEntity>> getAllStandardUsers()``` - Finds all standard user in database and returns them.
 
-#### EventController and EventService
+#### EventController
 EventController and EventService handle all the requests related to events.
 - ```public ResponseEntity<String> createEvent(EventDto eventDto)``` - Create an event and adds it into database. This action also involves the creation of tickets associated with the event and can be made only by organizers.
 - ```public ResponseEntity<String> updateEvent(EventDto eventDto, Long id)``` - Update an event's data in database, if it exists. This action can be made only by organizers.
 - ``` public ResponseEntity<String> deleteEvent(Long id)``` - Deletes an event from the database, if it exists.  This action also involves the deletion of the associated tickets. 
 - ``` public ResponseEntity<List<EventEntity>> getEventsByCity(String city)``` - Finds all events from a city in database and returns them.
   
-#### LocationController and LocationService
+#### LocationController
 LocationController and LocationService handle all the requests related to events'location.
 - ```public ResponseEntity<String> createLocation(LocationDto locationDto)``` - Creates a location for an event and adds it into database, if that location does no already exist in that city.
 - ``` public ResponseEntity<String> deleteLocation(Long id)``` - Deletes a location from the database, if it exists and if it is not assigned to any event.

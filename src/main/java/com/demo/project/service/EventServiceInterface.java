@@ -9,4 +9,5 @@ public interface EventServiceInterface {
     public EventDto updateEvent(EventDto eventDto, Long id);
     public boolean deleteEvent(Long id);
     public List<EventDto> getEventsByCity(String city);
+    public List<String> getAllCategories();
 }

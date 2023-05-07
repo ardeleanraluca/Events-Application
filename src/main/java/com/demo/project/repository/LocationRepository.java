@@ -10,5 +10,5 @@ import java.util.List;
 public interface LocationRepository extends JpaRepository<LocationEntity, Long> {
     LocationEntity findByNameAndCountyAndCity(String name,String county,String city);
 
-    List<LocationEntity> findAllByCountyAndCity(String county,String city);
+    List<LocationEntity> findAllByCountyAndCityOrderByName(String county,String city);
 }

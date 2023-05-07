@@ -53,7 +53,7 @@ public class LocationController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<LocationDto>> getLocationsByCountyAndCity(@RequestParam("county") String county, @RequestParam("city") String city) {
+    public ResponseEntity<List<LocationDto>> getLocationsByCountyAndCity(String county, String city) {
         List<LocationDto> locations = locationService.getLocationsByCountyAndCity(county,city);
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }

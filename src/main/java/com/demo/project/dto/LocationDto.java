@@ -11,6 +11,10 @@ import lombok.*;
 @EqualsAndHashCode
 @Builder
 public class LocationDto {
+
+    @NotEmpty
+    private Long id;
+
     @NotEmpty
     private Long noSeats;
 
@@ -25,6 +29,7 @@ public class LocationDto {
     private String city;
 
     public LocationDto(LocationEntity locationEntity) {
+        this.id = locationEntity.getId();
         this.noSeats = locationEntity.getNoSeats();
         this.address = locationEntity.getAddress();
         this.name = locationEntity.getName();

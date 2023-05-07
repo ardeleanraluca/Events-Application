@@ -69,9 +69,8 @@ public class LocationService implements LocationSeviceInterface {
         return true;
     }
 
-    @Override
     public List<LocationDto> getLocationsByCountyAndCity(String county, String city) {
-        List<LocationEntity> locationEntities = locationRepository.findAllByCountyAndCity(county,city);
+        List<LocationEntity> locationEntities = locationRepository.findAllByCountyAndCityOrderByName(county,city);
         return locationEntities.stream().map(LocationDto::new).toList();
     }
 }
