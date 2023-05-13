@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Builder
+@ToString
 public class LocationDto {
 
     @NotEmpty

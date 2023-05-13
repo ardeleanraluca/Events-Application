@@ -10,4 +10,7 @@ public interface EventServiceInterface {
     public boolean deleteEvent(Long id);
     public List<EventDto> getEventsByCity(String city);
     public List<String> getAllCategories();
+    public List<EventDto> getAllEvents();
+    public EventDto getEventById(Long id);
+    public List<EventDto> getEventsByOrganizer(Long id);
 }

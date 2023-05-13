@@ -73,4 +73,14 @@ public class LocationService implements LocationSeviceInterface {
         List<LocationEntity> locationEntities = locationRepository.findAllByCountyAndCityOrderByName(county,city);
         return locationEntities.stream().map(LocationDto::new).toList();
     }
+
+    public LocationDto getLocationById(Long id) {
+        LocationEntity locationEntity = locationRepository.findById(id).get();
+        return new LocationDto(locationEntity);
+    }
+
+    public List<LocationDto> getAllLocations() {
+        List<LocationEntity> locationEntities = locationRepository.findAll();
+        return locationEntities.stream().map(LocationDto::new).toList();
+    }
 }

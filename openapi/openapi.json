@@ -406,7 +406,126 @@
         }
       }
     },
+    "/location/getById": {
+      "get": {
+        "tags": [
+          "location-controller"
+        ],
+        "operationId": "getLocationById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/location/allLocations": {
+      "get": {
+        "tags": [
+          "location-controller"
+        ],
+        "operationId": "getAllLocations",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LocationDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/events": {
+      "get": {
+        "tags": [
+          "event-controller"
+        ],
+        "operationId": "getEventById",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/my-organized-events": {
+      "get": {
+        "tags": [
+          "event-controller"
+        ],
+        "operationId": "getEventsByOrganizer",
+        "parameters": [
+          {
+            "name": "organizerId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/filter": {
       "get": {
         "tags": [
           "event-controller"
@@ -422,6 +541,29 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/allEvents": {
+      "get": {
+        "tags": [
+          "event-controller"
+        ],
+        "operationId": "getEvents",
         "responses": {
           "200": {
             "description": "OK",
@@ -597,15 +739,47 @@
             "type": "integer",
             "format": "int64"
           },
-          "locationId": {
-            "type": "integer",
-            "format": "int64"
+          "location": {
+            "$ref": "#/components/schemas/LocationDto"
           },
           "tickets": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TicketDto"
             }
+          }
+        }
+      },
+      "LocationDto": {
+        "required": [
+          "address",
+          "city",
+          "county",
+          "id",
+          "name",
+          "noSeats"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "noSeats": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "address": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "county": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
           }
         }
       },
@@ -656,39 +830,6 @@
           "discount": {
             "type": "number",
             "format": "double"
-          }
-        }
-      },
-      "LocationDto": {
-        "required": [
-          "address",
-          "city",
-          "county",
-          "id",
-          "name",
-          "noSeats"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "noSeats": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "address": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "county": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
           }
         }
       },

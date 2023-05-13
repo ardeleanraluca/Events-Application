@@ -98,5 +98,4 @@ public class UserController {
         List<StandardUserDto> users = userService.getAllStandardUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
-
 }

@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode
+@ToString
 public class EventDto {
 
     private Long id;
@@ -28,7 +29,7 @@ public class EventDto {
     private String hour;
 
     private Long organizerId;
-    private Long locationId;
+    private LocationDto location;
 
     private List<TicketDto> tickets;
 
@@ -40,7 +41,7 @@ public class EventDto {
         this.date = eventEntity.getDate();
         this.hour = eventEntity.getHour();
         this.organizerId = eventEntity.getOrganizer().getId();
-        this.locationId = eventEntity.getLocation().getId();
+        this.location = new LocationDto(eventEntity.getLocation());
         this.tickets = eventEntity.getTickets().stream().map(TicketDto::new).collect(Collectors.toList());
 
     }

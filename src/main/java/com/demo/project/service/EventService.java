@@ -47,6 +47,8 @@ public class EventService implements EventServiceInterface {
      */
     @Transactional
     public EventDto createEvent(EventDto eventDto) {
+        System.out.println(eventDto);
+
         EventEntity eventEntity = new EventEntity();
         eventEntity.setName(eventDto.getName());
         eventEntity.setDescription(eventDto.getDescription());
@@ -54,12 +56,10 @@ public class EventService implements EventServiceInterface {
         eventEntity.setDate(eventDto.getDate());
         eventEntity.setHour(eventDto.getHour());
 
-        //// TO DO DELETE va fi luat din security context
         OrganizerEntity organizerEntity = organizerRepository.findById(eventDto.getOrganizerId()).get();
         eventEntity.setOrganizer(organizerEntity);
 
-        //// TO DO DELETE va fi un dropDown si daca nu se gaseste va fi un link de a crea sala noua
-        LocationEntity locationEntity = locationRepository.findById(eventDto.getLocationId()).get();
+        LocationEntity locationEntity = locationRepository.findById(eventDto.getLocation().getId()).get();
         eventEntity.setLocation(locationEntity);
         List<TicketDto> ticketDtos = eventDto.getTickets();
         System.out.println(ticketDtos.size());
@@ -100,7 +100,7 @@ public class EventService implements EventServiceInterface {
 
 
         //// TO DO DELETE va fi un dropDown si daca nu se gaseste va fi un link de a crea sala noua
-        LocationEntity locationEntity = locationRepository.findById(eventDto.getLocationId()).get();
+        LocationEntity locationEntity = locationRepository.findById(eventDto.getLocation().getId()).get();
         eventEntity.setLocation(locationEntity);
 
         List<TicketDto> ticketDtos = eventDto.getTickets();
@@ -146,8 +146,23 @@ public class EventService implements EventServiceInterface {
         return eventEntities.stream().map(EventDto::new).toList();
     }
 
+    public EventDto getEventById(Long id) {
+        EventEntity eventEntity = eventRepository.findById(id).get();
+        return new EventDto(eventEntity);
+    }
+
+    public List<EventDto> getAllEvents() {
+        List<EventEntity> eventEntities = eventRepository.findAll();
+        return eventEntities.stream().map(EventDto::new).toList();
+    }
+
     public List<String> getAllCategories() {
         return eventRepository.findAll().stream().map(EventEntity::getCategory).distinct().sorted().toList();
+    }
+
+    public List<EventDto> getEventsByOrganizer(Long id) {
+        List<EventEntity> eventEntities = eventRepository.findAllByOrganizer_Id(id);
+        return eventEntities.stream().map(EventDto::new).toList();
     }
 
 

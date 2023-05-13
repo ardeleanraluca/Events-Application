@@ -58,5 +58,17 @@ public class LocationController {
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }
 
+    @GetMapping("/getById")
+    public ResponseEntity<LocationDto> getLocationById(Long id) {
+        LocationDto location = locationService.getLocationById(id);
+        return new ResponseEntity<>(location, HttpStatus.OK);
+    }
+
+    @GetMapping("/allLocations")
+    public ResponseEntity<List<LocationDto>> getAllLocations() {
+        List<LocationDto> locations = locationService.getAllLocations();
+        return new ResponseEntity<>(locations, HttpStatus.OK);
+    }
+
 
 }

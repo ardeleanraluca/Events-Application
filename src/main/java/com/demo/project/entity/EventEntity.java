@@ -43,7 +43,6 @@ public class EventEntity {
     private OrganizerEntity organizer;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "location_id", referencedColumnName = "id")
     @JsonManagedReference
     private LocationEntity location;
 

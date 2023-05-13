@@ -68,7 +68,7 @@ public class EventController {
      *
      * @return the response entity - OK if the user was updated successfully, otherwise BAD_REQUEST.
      */
-    @GetMapping("")
+    @GetMapping("/filter")
     public ResponseEntity<List<EventDto>> getEventsByCity(@RequestParam("city") String city) {
         List<EventDto> events = eventService.getEventsByCity(city);
         return new ResponseEntity<>(events, HttpStatus.OK);
@@ -78,6 +78,25 @@ public class EventController {
     public ResponseEntity<List<String>> getCategories() {
         List<String> categories = eventService.getAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/allEvents")
+    public ResponseEntity<List<EventDto>> getEvents() {
+        List<EventDto> events = eventService.getAllEvents();
+        return new ResponseEntity<>(events, HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<EventDto> getEventById(@RequestParam("eventId") Long id) {
+        EventDto event = eventService.getEventById(id);
+        return new ResponseEntity<>(event, HttpStatus.OK);
+    }
+
+    @GetMapping("/my-organized-events")
+    public ResponseEntity<List<EventDto>> getEventsByOrganizer(@RequestParam("organizerId") Long id) {
+        List<EventDto> events = eventService.getEventsByOrganizer(id);
+        return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
 }
