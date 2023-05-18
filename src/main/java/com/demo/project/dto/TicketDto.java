@@ -11,11 +11,13 @@ import lombok.*;
 @EqualsAndHashCode
 public class TicketDto {
 
+    private Long id;
     private Double price;
 
     private Double discount;
 
     public TicketDto(TicketEntity ticketEntity) {
+        this.id = ticketEntity.getId();
         this.price = ticketEntity.getPrice();
         this.discount = ticketEntity.getDiscount();
     }

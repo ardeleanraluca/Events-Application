@@ -15,7 +15,7 @@ public class BoughtTicketEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "typeTicked_id", referencedColumnName = "id")
     private TicketEntity typedTicket;
 

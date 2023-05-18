@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -61,6 +62,8 @@ public class EventService implements EventServiceInterface {
 
         LocationEntity locationEntity = locationRepository.findById(eventDto.getLocation().getId()).get();
         eventEntity.setLocation(locationEntity);
+        eventEntity.setAvailableTickets(locationEntity.getNoSeats());
+        eventEntity.setSoldTickets(0L);
         List<TicketDto> ticketDtos = eventDto.getTickets();
         System.out.println(ticketDtos.size());
         List<TicketEntity> ticketEntities = new ArrayList<>();
@@ -98,10 +101,9 @@ public class EventService implements EventServiceInterface {
         eventEntity.setDate(eventDto.getDate());
         eventEntity.setHour(eventDto.getHour());
 
-
-        //// TO DO DELETE va fi un dropDown si daca nu se gaseste va fi un link de a crea sala noua
         LocationEntity locationEntity = locationRepository.findById(eventDto.getLocation().getId()).get();
         eventEntity.setLocation(locationEntity);
+        eventEntity.setAvailableTickets(locationEntity.getNoSeats());
 
         List<TicketDto> ticketDtos = eventDto.getTickets();
         List<TicketEntity> ticketEntities = new ArrayList<>();
@@ -153,7 +155,9 @@ public class EventService implements EventServiceInterface {
 
     public List<EventDto> getAllEvents() {
         List<EventEntity> eventEntities = eventRepository.findAll();
-        return eventEntities.stream().map(EventDto::new).toList();
+        List<EventDto> events = new ArrayList<>(eventEntities.stream().map(EventDto::new).toList());
+        Collections.reverse(events);
+        return events;
     }
 
     public List<String> getAllCategories() {

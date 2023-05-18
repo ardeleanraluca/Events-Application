@@ -27,9 +27,13 @@ public class EventDto {
     @NotEmpty
     private String date;
     private String hour;
+    private Long availableTickets;
+
+    private Long soldTickets;
 
     private Long organizerId;
     private LocationDto location;
+
 
     private List<TicketDto> tickets;
 
@@ -40,6 +44,8 @@ public class EventDto {
         this.category = eventEntity.getCategory();
         this.date = eventEntity.getDate();
         this.hour = eventEntity.getHour();
+        this.soldTickets = eventEntity.getSoldTickets();
+        this.availableTickets = eventEntity.getAvailableTickets();
         this.organizerId = eventEntity.getOrganizer().getId();
         this.location = new LocationDto(eventEntity.getLocation());
         this.tickets = eventEntity.getTickets().stream().map(TicketDto::new).collect(Collectors.toList());

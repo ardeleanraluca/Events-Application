@@ -252,6 +252,39 @@
         }
       }
     },
+    "/boughtTicket/buy": {
+      "post": {
+        "tags": [
+          "bought-ticket-controller"
+        ],
+        "operationId": "buyTickets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/BoughtTicketDto"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth/register": {
       "post": {
         "tags": [
@@ -735,6 +768,14 @@
           "hour": {
             "type": "string"
           },
+          "availableTickets": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "soldTickets": {
+            "type": "integer",
+            "format": "int64"
+          },
           "organizerId": {
             "type": "integer",
             "format": "int64"
@@ -830,6 +871,23 @@
           "discount": {
             "type": "number",
             "format": "double"
+          }
+        }
+      },
+      "BoughtTicketDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "typedTicketId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },

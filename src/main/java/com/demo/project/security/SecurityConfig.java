@@ -59,6 +59,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/events/**").permitAll()
                 .requestMatchers("/location/**").permitAll()
+                .requestMatchers("/boughtTicket/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and()

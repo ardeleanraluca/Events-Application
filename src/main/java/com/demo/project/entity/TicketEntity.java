@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,4 +27,7 @@ public class TicketEntity {
     @JoinColumn(name = "event_id", nullable = false)
     @JsonBackReference
     private EventEntity event;
+
+    @OneToMany(mappedBy = "typedTicket", cascade = CascadeType.REMOVE)
+    private List<BoughtTicketEntity> boughtTickets;
 }

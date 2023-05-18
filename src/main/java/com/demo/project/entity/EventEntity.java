@@ -37,6 +37,12 @@ public class EventEntity {
     @Column()
     private String imgUrl;
 
+    @Column()
+    private Long availableTickets;
+
+    @Column()
+    private Long soldTickets;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "organizer_id", nullable = false)
     @JsonBackReference
