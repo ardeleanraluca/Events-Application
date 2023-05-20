@@ -1,6 +1,8 @@
 package com.demo.project.service;
 
 import com.demo.project.dto.BoughtTicketDto;
+import com.demo.project.dto.EventDto;
+import com.demo.project.dto.TicketDetailsDto;
 import com.demo.project.entity.BoughtTicketEntity;
 import com.demo.project.entity.EventEntity;
 import com.demo.project.entity.TicketEntity;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -53,5 +56,22 @@ public class BoughtTicketService implements BoughtTicketServiceInterface {
             nr++;
         }
         return nr;
+    }
+
+    @Override
+    public List<TicketDetailsDto> getTicketsByUserId(Long id) {
+        List<BoughtTicketEntity> boughtTicketEntities =  boughtTicketRepository.getBoughtTicketEntitiesByUser_Id(id);
+
+        List<TicketDetailsDto> ticketDetailsDtos = new ArrayList<>();
+
+        for(BoughtTicketEntity b: boughtTicketEntities){
+            TicketEntity typedTicket = b.getTypedTicket();
+            EventEntity event = typedTicket.getEvent();
+            TicketDetailsDto ticketDetailsDto = new TicketDetailsDto(b.getId(),typedTicket.getPrice(), new EventDto(event));
+            ticketDetailsDtos.add(ticketDetailsDto);
+        }
+
+        return ticketDetailsDtos;
+
     }
 }

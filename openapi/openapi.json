@@ -637,6 +637,40 @@
         }
       }
     },
+    "/boughtTicket/myTickets": {
+      "get": {
+        "tags": [
+          "bought-ticket-controller"
+        ],
+        "operationId": "getTicketsByUserId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TicketDetailsDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/deleteOrganizer/{id}": {
       "delete": {
         "tags": [
@@ -864,6 +898,10 @@
       "TicketDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
           "price": {
             "type": "number",
             "format": "double"
@@ -930,6 +968,22 @@
           },
           "role": {
             "type": "string"
+          }
+        }
+      },
+      "TicketDetailsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "eventDto": {
+            "$ref": "#/components/schemas/EventDto"
           }
         }
       }

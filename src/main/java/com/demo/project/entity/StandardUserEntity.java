@@ -1,10 +1,7 @@
 package com.demo.project.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -15,6 +12,7 @@ import java.util.List;
 @Entity
 @Builder
 @Table(name = "users")
+@ToString
 public class StandardUserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

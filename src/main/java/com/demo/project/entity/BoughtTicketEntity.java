@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "bought_tickets")
+@ToString
 public class BoughtTicketEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,14 +1,12 @@
 package com.demo.project.controller;
 
 import com.demo.project.dto.BoughtTicketDto;
+import com.demo.project.dto.TicketDetailsDto;
 import com.demo.project.service.BoughtTicketServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +24,12 @@ public class BoughtTicketController {
         } else {
             return new ResponseEntity<>("Success", HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/myTickets")
+    public ResponseEntity<List<TicketDetailsDto>> getTicketsByUserId( Long id) {
+        List<TicketDetailsDto> tickets = boughtTicketServiceInterface.getTicketsByUserId(id);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
 }
