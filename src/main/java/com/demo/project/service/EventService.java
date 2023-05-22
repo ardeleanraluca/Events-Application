@@ -2,10 +2,7 @@ package com.demo.project.service;
 
 import com.demo.project.dto.EventDto;
 import com.demo.project.dto.TicketDto;
-import com.demo.project.entity.EventEntity;
-import com.demo.project.entity.LocationEntity;
-import com.demo.project.entity.OrganizerEntity;
-import com.demo.project.entity.TicketEntity;
+import com.demo.project.entity.*;
 import com.demo.project.repository.EventRepository;
 import com.demo.project.repository.LocationRepository;
 import com.demo.project.repository.OrganizerRepository;
@@ -57,6 +54,13 @@ public class EventService implements EventServiceInterface {
         eventEntity.setDate(eventDto.getDate());
         eventEntity.setHour(eventDto.getHour());
 
+
+        ImageEntity newImage = ImageEntity.builder()
+                .name(eventDto.getImage().getName())
+                .type(eventDto.getImage().getType())
+                .picByte(eventDto.getImage().getPicByte()).build();
+        eventEntity.setImage(newImage);
+
         OrganizerEntity organizerEntity = organizerRepository.findById(eventDto.getOrganizerId()).get();
         eventEntity.setOrganizer(organizerEntity);
 
@@ -100,6 +104,12 @@ public class EventService implements EventServiceInterface {
         eventEntity.setCategory(eventDto.getCategory());
         eventEntity.setDate(eventDto.getDate());
         eventEntity.setHour(eventDto.getHour());
+
+        ImageEntity newImage = ImageEntity.builder()
+                .name(eventDto.getImage().getName())
+                .type(eventDto.getImage().getType())
+                .picByte(eventDto.getImage().getPicByte()).build();
+        eventEntity.setImage(newImage);
 
         LocationEntity locationEntity = locationRepository.findById(eventDto.getLocation().getId()).get();
         eventEntity.setLocation(locationEntity);

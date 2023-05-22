@@ -141,13 +141,25 @@
         ],
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/EventDto"
+                "required": [
+                  "event",
+                  "image"
+                ],
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "$ref": "#/components/schemas/EventDto"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -230,13 +242,25 @@
         "operationId": "createEvent",
         "requestBody": {
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/EventDto"
+                "required": [
+                  "event",
+                  "image"
+                ],
+                "type": "object",
+                "properties": {
+                  "event": {
+                    "$ref": "#/components/schemas/EventDto"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -817,10 +841,31 @@
           "location": {
             "$ref": "#/components/schemas/LocationDto"
           },
+          "image": {
+            "$ref": "#/components/schemas/ImageDto"
+          },
           "tickets": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TicketDto"
+            }
+          }
+        }
+      },
+      "ImageDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "picByte": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "byte"
             }
           }
         }

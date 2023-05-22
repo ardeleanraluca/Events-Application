@@ -1,12 +1,16 @@
 package com.demo.project.controller;
 
 import com.demo.project.dto.EventDto;
+import com.demo.project.dto.ImageDto;
 import com.demo.project.service.EventServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -25,8 +29,13 @@ public class EventController {
      *
      * @return the response entity - CREATED if the event was created successfully
      */
-    @PostMapping("/createEvent")
-    public ResponseEntity<EventDto> createEvent(@RequestBody EventDto eventDto) {
+    @PostMapping(value = "/createEvent", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<EventDto> createEvent(@RequestPart("event") EventDto eventDto, @RequestPart("image") MultipartFile file) throws IOException {
+        ImageDto imageDto = new ImageDto(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+        eventDto.setImage(imageDto);
+
+        System.out.println(eventDto);
+
         EventDto createdEvent = eventService.createEvent(eventDto);
         return new ResponseEntity<>(createdEvent, HttpStatus.CREATED);
     }
@@ -46,6 +55,22 @@ public class EventController {
         }
 
     }
+
+
+    @PutMapping(value="/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<EventDto> updateEventImage(@RequestPart("event") EventDto eventDto, @RequestPart("image") MultipartFile file,@PathVariable Long id) throws IOException {
+        ImageDto imageDto = new ImageDto(file.getOriginalFilename(), file.getContentType(), file.getBytes());
+        eventDto.setImage(imageDto);
+
+        EventDto updatedEvent = eventService.updateEvent(eventDto, id);
+        if (updatedEvent == null) {
+            return new ResponseEntity<>(updatedEvent, HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(updatedEvent, HttpStatus.OK);
+        }
+
+    }
+
 
     /**
      * Handles the api call for deleting an event and transfer it to the service layer.

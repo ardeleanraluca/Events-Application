@@ -34,8 +34,9 @@ public class EventEntity {
     @Column(nullable = false)
     private String hour;
 
-    @Column()
-    private String imgUrl;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private ImageEntity image;
 
     @Column()
     private Long availableTickets;

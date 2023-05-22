@@ -33,7 +33,7 @@ public class EventDto {
 
     private Long organizerId;
     private LocationDto location;
-
+    private ImageDto image;
 
     private List<TicketDto> tickets;
 
@@ -49,6 +49,7 @@ public class EventDto {
         this.organizerId = eventEntity.getOrganizer().getId();
         this.location = new LocationDto(eventEntity.getLocation());
         this.tickets = eventEntity.getTickets().stream().map(TicketDto::new).collect(Collectors.toList());
+        this.image = new ImageDto(eventEntity.getImage());
 
     }
 
