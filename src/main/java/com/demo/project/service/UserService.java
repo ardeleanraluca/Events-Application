@@ -126,4 +126,13 @@ public class UserService implements UserServiceInterface {
         List<StandardUserEntity> users = standardUserRepository.findAll();
         return users.stream().map(StandardUserDto::new).toList();
     }
+
+    public OrganizerDto getOrgbyId(Long id){
+        return new OrganizerDto(organizerRepository.findById(id).get());
+    }
+
+    public List<OrganizerDto> getAllOrganizers(){
+        List<OrganizerEntity> organizerEntities = organizerRepository.findAll();
+        return organizerEntities.stream().map(OrganizerDto::new).toList();
+    }
 }

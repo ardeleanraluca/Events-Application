@@ -15,4 +15,8 @@ public interface UserServiceInterface {
     public OrganizerDto updateOrganizer(OrganizerDto newOrganizer, Long id);
 
     public List<StandardUserDto> getAllStandardUsers();
+
+    public OrganizerDto getOrgbyId(Long id);
+
+    public List<OrganizerDto> getAllOrganizers();
 }

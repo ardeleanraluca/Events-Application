@@ -98,4 +98,16 @@ public class UserController {
         List<StandardUserDto> users = userService.getAllStandardUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
+
+    @GetMapping("/all/organizers")
+    public ResponseEntity<List<OrganizerDto>> getAllOrganizers() {
+        List<OrganizerDto> organizerDtos = userService.getAllOrganizers();
+        return new ResponseEntity<>(organizerDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/organizerId")
+    public ResponseEntity<OrganizerDto> getOrgById(Long id) {
+        OrganizerDto org = this.userService.getOrgbyId(id);
+        return new ResponseEntity<>(org, HttpStatus.OK);
+    }
 }
