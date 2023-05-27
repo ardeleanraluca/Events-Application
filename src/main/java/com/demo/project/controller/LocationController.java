@@ -52,18 +52,33 @@ public class LocationController {
         }
     }
 
+    /**
+     * Handles the api call for returning all locations from a city by id and transfer it to the service layer.
+     *
+     * @return all available locations from a given county and city
+     */
     @GetMapping("")
     public ResponseEntity<List<LocationDto>> getLocationsByCountyAndCity(String county, String city) {
         List<LocationDto> locations = locationService.getLocationsByCountyAndCity(county,city);
         return new ResponseEntity<>(locations, HttpStatus.OK);
     }
 
+    /**
+     * Handles the api call for returning a location by id and transfer it to the service layer.
+     *
+     * @return the location with given id
+     */
     @GetMapping("/getById")
     public ResponseEntity<LocationDto> getLocationById(Long id) {
         LocationDto location = locationService.getLocationById(id);
         return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
+    /**
+     * Handles the api call for returning all existing locations and transfer it to the service layer.
+     *
+     * @return all available locations
+     */
     @GetMapping("/allLocations")
     public ResponseEntity<List<LocationDto>> getAllLocations() {
         List<LocationDto> locations = locationService.getAllLocations();

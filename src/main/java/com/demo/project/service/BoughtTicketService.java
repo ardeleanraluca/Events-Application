@@ -18,6 +18,10 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * This class handles all requests related to bought tickets.
+ */
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,7 +43,13 @@ public class BoughtTicketService implements BoughtTicketServiceInterface {
 
 
 
-//    @Transactional
+    /**
+     * Create bought tickets and adds them into database
+     *
+     * @param boughtTickets a list of objects that contains all the details of a bought ticket
+     * @return size - If the bought tickets were successfully added in the database it returns the same size as the size of input list, otherwise
+     * the registration will not succeed and it returns 0.
+     */
     public int buyTickets(List<BoughtTicketDto> boughtTickets) {
         int nr = 0;
         for (BoughtTicketDto boughtTicket : boughtTickets) {
@@ -58,6 +68,12 @@ public class BoughtTicketService implements BoughtTicketServiceInterface {
         return nr;
     }
 
+    /**
+     * Finds all bought tickets of a user in database and returns them.
+     *
+     * @param id the user id
+     * @return tickets purchased by a specific user
+     */
     @Override
     public List<TicketDetailsDto> getTicketsByUserId(Long id) {
         List<BoughtTicketEntity> boughtTicketEntities =  boughtTicketRepository.getBoughtTicketEntitiesByUser_Id(id);

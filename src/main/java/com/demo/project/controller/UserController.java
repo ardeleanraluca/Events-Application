@@ -89,9 +89,9 @@ public class UserController {
 
 
     /**
-     * Gets all standard users.
+     * Handles the api call for returning all standard users and transfer it to the service layer.
      *
-     * @return the all standard users
+     * @return all standard users
      */
     @GetMapping("/all")
     public ResponseEntity<List<StandardUserDto>> getAllStandardUsers() {
@@ -99,12 +99,22 @@ public class UserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
+    /**
+     * Handles the api call for returning all organizers and transfer it to the service layer.
+     *
+     * @return all organizers
+     */
     @GetMapping("/all/organizers")
     public ResponseEntity<List<OrganizerDto>> getAllOrganizers() {
         List<OrganizerDto> organizerDtos = userService.getAllOrganizers();
         return new ResponseEntity<>(organizerDtos, HttpStatus.OK);
     }
 
+    /**
+     * Handles the api call for returning an organizer by id and transfer it to the service layer.
+     *
+     * @return the organizer with given id
+     */
     @GetMapping("/organizerId")
     public ResponseEntity<OrganizerDto> getOrgById(Long id) {
         OrganizerDto org = this.userService.getOrgbyId(id);

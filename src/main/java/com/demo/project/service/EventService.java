@@ -158,11 +158,22 @@ public class EventService implements EventServiceInterface {
         return eventEntities.stream().map(EventDto::new).toList();
     }
 
+    /**
+     * Finds the event with given id in database and returns them.
+     *
+     * @param id the id
+     * @return the event with given id
+     */
     public EventDto getEventById(Long id) {
         EventEntity eventEntity = eventRepository.findById(id).get();
         return new EventDto(eventEntity);
     }
 
+    /**
+     * Finds all existing events in database and returns them.
+     *
+     * @return all existing events
+     */
     public List<EventDto> getAllEvents() {
         List<EventEntity> eventEntities = eventRepository.findAll();
         List<EventDto> events = new ArrayList<>(eventEntities.stream().map(EventDto::new).toList());
@@ -170,10 +181,21 @@ public class EventService implements EventServiceInterface {
         return events;
     }
 
+    /**
+     * Finds all event categories in database and returns them.
+     *
+     * @return all existing categories
+     */
     public List<String> getAllCategories() {
         return eventRepository.findAll().stream().map(EventEntity::getCategory).distinct().sorted().toList();
     }
 
+    /**
+     * Finds all events organized by a given organizer's id in database and returns them.
+     *
+     * @param id organizer's id
+     * @return all events of an organizer
+     */
     public List<EventDto> getEventsByOrganizer(Long id) {
         List<EventEntity> eventEntities = eventRepository.findAllByOrganizer_Id(id);
         return eventEntities.stream().map(EventDto::new).toList();

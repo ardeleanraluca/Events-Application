@@ -44,8 +44,6 @@ public class AuthController {
      */
     @PostMapping("/registerOrganizer")
     public ResponseEntity<String> registerOrganizer(@RequestBody OrganizerDto organizerDto) {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN")))
         OrganizerDto registered = authService.registerOrganizer(organizerDto);
         if (registered == null) {
             return new ResponseEntity<>("An account is already registered with this email!", HttpStatus.BAD_REQUEST);
@@ -53,7 +51,6 @@ public class AuthController {
         } else {
             return new ResponseEntity<>("Organizer registered success!", HttpStatus.OK);
         }
-//        return new ResponseEntity<>("Organizer can not be registered because you are not an admin!", HttpStatus.FORBIDDEN);
     }
 
 

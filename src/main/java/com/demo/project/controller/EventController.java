@@ -56,7 +56,11 @@ public class EventController {
 
     }
 
-
+    /**
+     * Handles the api call to update an event including the photo of that event and transfer it to the service layer.
+     *
+     * @return the response entity - OK if the event was updated successfully, otherwise BAD_REQUEST.
+     */
     @PutMapping(value="/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<EventDto> updateEventImage(@RequestPart("event") EventDto eventDto, @RequestPart("image") MultipartFile file,@PathVariable Long id) throws IOException {
         ImageDto imageDto = new ImageDto(file.getOriginalFilename(), file.getContentType(), file.getBytes());
@@ -99,25 +103,45 @@ public class EventController {
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
+
+    /**
+     * Handles the api call for returning all existing categories from all existing events and transfer it to the service layer.
+     *
+     * @return all existing categories
+     */
     @GetMapping("/allCategories")
     public ResponseEntity<List<String>> getCategories() {
         List<String> categories = eventService.getAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
-
+    /**
+     * Handles the api call for returning all existing events and transfer it to the service layer.
+     *
+     * @return all existing events
+     */
     @GetMapping("/allEvents")
     public ResponseEntity<List<EventDto>> getEvents() {
         List<EventDto> events = eventService.getAllEvents();
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
+    /**
+     * Handles the api call for returning an event by id and transfer it to the service layer.
+     *
+     * @return the event with given id
+     */
     @GetMapping("")
     public ResponseEntity<EventDto> getEventById(@RequestParam("eventId") Long id) {
         EventDto event = eventService.getEventById(id);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
+    /**
+     * Handles the api call for returning all events of an organizer and transfer it to the service layer.
+     *
+     * @return all events organized by a given organizer
+     */
     @GetMapping("/my-organized-events")
     public ResponseEntity<List<EventDto>> getEventsByOrganizer(@RequestParam("organizerId") Long id) {
         List<EventDto> events = eventService.getEventsByOrganizer(id);

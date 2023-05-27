@@ -69,16 +69,35 @@ public class LocationService implements LocationSeviceInterface {
         return true;
     }
 
+
+    /**
+     * Finds all locations from a given county and city in database and returns them.
+     *
+     * @param county the county
+     * @param city the city
+     * @return all location available in a specific city
+     */
     public List<LocationDto> getLocationsByCountyAndCity(String county, String city) {
         List<LocationEntity> locationEntities = locationRepository.findAllByCountyAndCityOrderByName(county,city);
         return locationEntities.stream().map(LocationDto::new).toList();
     }
 
+    /**
+     * Finds location by id in database and returns them.
+     *
+     * @param id the id
+     * @return the location with given id
+     */
     public LocationDto getLocationById(Long id) {
         LocationEntity locationEntity = locationRepository.findById(id).get();
         return new LocationDto(locationEntity);
     }
 
+    /**
+     * Finds all location in database and returns them.
+     *
+     * @return all available locations
+     */
     public List<LocationDto> getAllLocations() {
         List<LocationEntity> locationEntities = locationRepository.findAll();
         return locationEntities.stream().map(LocationDto::new).toList();
