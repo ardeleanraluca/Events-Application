@@ -151,9 +151,67 @@ LocationController and LocationService handle all the requests related to events
 - ``` public ResponseEntity<List<LocationDto>> getAllLocations()``` - Finds all location in database and returns them.
 
 A location should not be editable for security reasons. Once created, it cannot be modified to avoid any mistakes that may affect the event.
-</div>
 
 #### BoughtTicketsController
 BoughtTicketsController and BoughtTicketsService handle all the requests related to bought tickets.
 - ``` public ResponseEntity<String> buyTickets(@RequestBody List<BoughtTicketDto> boughtTicketsDto)``` - Create bought tickets for a specific event and adds them into database.
 - ```public ResponseEntity<List<TicketDetailsDto>> getTicketsByUserId``` - Finds all bought tickets of a specific user in database and returns them.
+
+## Frontend
+To build the front-end of my application, I used Angular and some specific libraries. Also, for design I integrated Boostrap5 in my project.
+
+Angular is a platform and framework for building single-page client applications using HTML and TypeScript. It implements core and optional functionality as a set of TypeScript libraries that you import into your applications.
+
+### Angular Architecture
+
+Angular is a full-fledged model-view-controller (MVC) framework. It provides clear guidance on how the application should be structured and offers bi-directional data flow while providing real DOM. 
+
+![Angular_Architecture.png](Angular_Architecture.png)
+
+The following are the eight building blocks of an Angular application: 
+
+#### 1. Modules
+An Angular app has a root module, named AppModule, which provides the bootstrap mechanism to launch the application.
+
+#### 2. Components
+Each component in the application defines a class that holds the application logic and data. A component generally defines a part of the user interface (UI).
+
+#### 3. Templates
+The Angular template combines the Angular markup with HTML to modify HTML elements before they are displayed. There are two types of data binding: 
+- *Event binding*: Lets your app respond to user input in the target environment by updating your application data.
+- *Property binding*: Enables users to interpolate values that are computed from your application data into the HTML.
+
+#### 4. Metadata
+Metadata tells Angular how to process a class. It is used to decorate the class so that it can configure the expected behavior of a class.
+
+#### 5. Services
+
+When you have data or logic that isn’t associated with the view but has to be shared across components, a service class is created. The class is always associated with the @Injectible decorator.
+
+#### 6. Dependency Injection
+
+This feature lets you keep your component classes crisp and efficient. It does not fetch data from a server, validate the user input, or log directly to the console. Instead, it delegates such tasks to the services.
+
+
+### Advantages of Angular
+![Angular_Advantages.png](Angular_Advantages.png)
+
+#### 1. Custom Components
+Angular enables users to build their own components that can pack functionality along with rendering logic into reusable pieces. It also plays well with web components.
+
+#### 2. Data Binding
+Angular enables users to effortlessly move data from JavaScript code to the view, and react to user events without having to write any code manually. 
+
+#### 3. Dependency Injection
+Angular enables users to write modular services and inject them wherever they are needed. This improves the testability and reusability of the same services. 
+
+#### 4. Testing
+Tests are first-class tools, and Angular has been built from the ground up with testability in mind. You will have the ability to test every part of your application—which is highly recommended. 
+
+#### 5. Comprehensive
+Angular is a full-fledged framework and provides out-of-the-box solutions for server communication, routing within your application, and more.
+
+#### 6. Browser Compatibility
+Angular is cross-platform and compatible with multiple browsers. An Angular application can typically run on all browsers (Eg: Chrome, Firefox) and OSes, such as Windows, macOS, and Linux.
+
+</div>
