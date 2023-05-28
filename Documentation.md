@@ -14,24 +14,21 @@ Therefore, the application accepts 4 types of users:
 ## Features
 The features are customized according to the user, but there are also more general features.
 The feature that is available to all users is to view the events that exist at that time in the application.
-The next most general functionality is aimed at users who are **not guests**, namely that of authentication in the application, and as an extension to the authentication functionality is password reset in case the user has forgotten his password.
+The next most general functionality is aimed at users who are **not guests**, namely that of authentication in the application.
 #### _Guest_
 - can register in application.
 
 #### _Standard User_
-- can purchase tickets to the event, and depending on the event there may be several types of tickets to choose from.
-- at some events, the user must choose the place among the available ones or it will be randomly generated.
-- depending on the previous events in which the user participated, certain events are suggested to him when he logs into the application.
+- can purchase tickets to the event
+- can see the tickets that he bought, to be easily found for checking tickets at the entrance of the event
 
 #### _Organizer_
-- add the event he organizes in the application with the possibility of having different types of tickets.
-- has a section where he can see and edit the organized events, but also how many tickets were sold for each event.
-
+- add the event he organizes in the application 
+- has a section where he can see and edit the organized events
 #### _Admin_
 - create accounts for the organizers as a result of an agreement between the two.
 - delete organizer accounts and associated events if the agreement between the two is no longer valid.
 - has access to details about organizers and events.
-- can generate certain reports.
 
 ## Database diagram
 ![Database Diagram](http://www.plantuml.com/plantuml/svg/hPJ1Rjim38RlVWgs0uOQM55iG8V2C8oUTjbrzq2sM5keB0OItTPRykwJLTkBNNLBWlaM_jJ7dnIZUyV2SjVgv4BYWp88MwjQOVlD8_PNBodaPP5NfCbc7ygxkw-V_S-FNYhocn0jNlARifWFFv15LPlny7HGX6zzS3x4ejGur4B3YdjuWJo7gn-VuBbHZ2aKHP9SS8EjDwU5CWdJ5fYW96PgGIgB5IioYNjKPYkiQ45xBlTR1BBSK9AybYYfgnlUiAeUaLqAlnA0HRzAfXcKgbQ6lRJePg2zdfIRWpHlzTltebXdTmvjB6q_Ei4dDASwQ8JMHvGcMmkZVg9z9xSIZ3NPFeCdOQj6sAiljxVfe4YlHABeAgksmu3VYWrrzctKY7ODsazteAaI0-k8vYEOmJzrXlj8NCMYGagBpaKyqiQXO3SLdAzcdj-9roEguEnljsv9urbzpuIpLZSissQL89KBVZEGr7cqXs6bd28paYkCIBEHiE1ZowVP2LFmRZBm6jPequFbn5OeVSn2XNh2kMUoSgaiBFw_EunlM7mVmxel7ni8tsvtVRtRmIAs-3AuN3uqcPANKTG-a20q2H173UB424kmoXmPyryonWYlphyPV_ur4SOiJg1OzZWRM6pM2ZI69qniZgEVcDKP4yG94gitGePDVNUuWtZ8c1FFx-SUZUnQ_Hi0)
@@ -129,8 +126,10 @@ UserController and UserService handle all the requests related to users, whateve
 - ```public ResponseEntity<String> update(StandardUserDto newUser, Long id)``` - Updates a user's data in database, if it exists. This method can update both the user account data and the personal data of a standard user.
 - ```public ResponseEntity<String> updateOrganizer(OrganizerDto newOrganizer, Long id)``` - Updates an organizer's data in database, if it exists. This method can update both the user account data and the personal data of an organizer.
 - ```public ResponseEntity<String> delete(Long id)``` - Deletes a standard user from the database, if it exists. This action also involves the deletion of the associated user account.
-- ``` public ResponseEntity<String> deleteOrganizer(Long id)``` - Deletes an organizer from the database, if it exists. This action also involves the deletion of the associated user account and only an admin is able to do this.
+- ```public ResponseEntity<String> deleteOrganizer(Long id)``` - Deletes an organizer from the database, if it exists. This action also involves the deletion of the associated user account and only an admin is able to do this.
 - ```public ResponseEntity<List<StandardUserEntity>> getAllStandardUsers()``` - Finds all standard user in database and returns them.
+- ```public ResponseEntity<OrganizerDto> getOrgById(Long id)``` - Finds the organizer by id in database and returns it.
+- ```public ResponseEntity<List<OrganizerDto>> getAllOrganizers()``` - Finds all organizers in database and returns them.
 
 #### EventController
 EventController and EventService handle all the requests related to events.
@@ -138,11 +137,23 @@ EventController and EventService handle all the requests related to events.
 - ```public ResponseEntity<String> updateEvent(EventDto eventDto, Long id)``` - Update an event's data in database, if it exists. This action can be made only by organizers.
 - ``` public ResponseEntity<String> deleteEvent(Long id)``` - Deletes an event from the database, if it exists.  This action also involves the deletion of the associated tickets. 
 - ``` public ResponseEntity<List<EventEntity>> getEventsByCity(String city)``` - Finds all events from a city in database and returns them.
+- ```public ResponseEntity<EventDto> getEventById(@RequestParam("eventId") Long id)``` - Finds the event with given id in database and returns them.
+- ```public ResponseEntity<List<EventDto>> getEvents()``` - Finds all existing events in database and returns them.
+- ``` public ResponseEntity<List<String>> getCategories()``` - Finds all event categories in database and returns them.
+- ```public ResponseEntity<List<EventDto>> getEventsByOrganizer(@RequestParam("organizerId") Long id)``` - Finds all events organized by a given organizer  in database and returns them.
   
 #### LocationController
 LocationController and LocationService handle all the requests related to events'location.
 - ```public ResponseEntity<String> createLocation(LocationDto locationDto)``` - Creates a location for an event and adds it into database, if that location does no already exist in that city.
 - ``` public ResponseEntity<String> deleteLocation(Long id)``` - Deletes a location from the database, if it exists and if it is not assigned to any event.
+- ```public ResponseEntity<List<LocationDto>> getLocationsByCountyAndCity(String county, String city)``` - Finds all locations from a given county and city in database and returns them.
+- ```public ResponseEntity<LocationDto> getLocationById(Long id)``` - Finds location by id in database and returns them.
+- ``` public ResponseEntity<List<LocationDto>> getAllLocations()``` - Finds all location in database and returns them.
 
 A location should not be editable for security reasons. Once created, it cannot be modified to avoid any mistakes that may affect the event.
 </div>
+
+#### BoughtTicketsController
+BoughtTicketsController and BoughtTicketsService handle all the requests related to bought tickets.
+- ``` public ResponseEntity<String> buyTickets(@RequestBody List<BoughtTicketDto> boughtTicketsDto)``` - Create bought tickets for a specific event and adds them into database.
+- ```public ResponseEntity<List<TicketDetailsDto>> getTicketsByUserId``` - Finds all bought tickets of a specific user in database and returns them.

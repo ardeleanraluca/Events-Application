@@ -191,7 +191,7 @@ public class EventService implements EventServiceInterface {
     }
 
     /**
-     * Finds all events organized by a given organizer's id in database and returns them.
+     * Finds all events organized by a given organizer in database and returns them.
      *
      * @param id organizer's id
      * @return all events of an organizer
